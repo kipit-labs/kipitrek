@@ -62,7 +62,7 @@ func fakeServer(t *testing.T) (port int, got <-chan string) {
 
 func TestSend(t *testing.T) {
 	port, got := fakeServer(t)
-	m, err := NewMailer(Config{Host: "127.0.0.1", Port: port, From: "GPX Viewer <noreply@gpx.test>"})
+	m, err := NewMailer(Config{Host: "127.0.0.1", Port: port, From: "kipitrek <noreply@gpx.test>"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -73,7 +73,7 @@ func TestSend(t *testing.T) {
 	for _, want := range []string{
 		"MAIL FROM:<noreply@gpx.test>",
 		"RCPT TO:<alice@example.com>",
-		`From: "GPX Viewer" <noreply@gpx.test>`,
+		`From: "kipitrek" <noreply@gpx.test>`,
 		"To: <alice@example.com>",
 		"Subject: =?utf-8?q?Confirm_your_=C3=A9mail?=",
 		"Content-Type: text/plain; charset=\"utf-8\"",

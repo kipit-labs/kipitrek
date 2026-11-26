@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 type HikeInteractions struct {

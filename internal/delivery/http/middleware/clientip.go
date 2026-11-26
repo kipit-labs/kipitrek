@@ -6,7 +6,7 @@ import (
 	"net/netip"
 	"strings"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // RealIP sets RemoteAddr to the client IP a trusted reverse proxy reports

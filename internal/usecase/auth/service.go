@@ -16,7 +16,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 const (

@@ -11,15 +11,15 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/MatHoyer/gpx-viewer/internal/config"
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
-	"github.com/MatHoyer/gpx-viewer/internal/infrastructure/overpass"
-	"github.com/MatHoyer/gpx-viewer/internal/infrastructure/postgres"
-	"github.com/MatHoyer/gpx-viewer/internal/usecase/summit"
+	"github.com/kipit-labs/kipitrek/internal/config"
+	"github.com/kipit-labs/kipitrek/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/infrastructure/overpass"
+	"github.com/kipit-labs/kipitrek/internal/infrastructure/postgres"
+	"github.com/kipit-labs/kipitrek/internal/usecase/summit"
 )
 
 // importPeaks loads named OpenStreetMap peaks in a bounding box into the
-// database: `api import-peaks -bbox minLon,minLat,maxLon,maxLat`.
+// database: `kipitrek import-peaks -bbox minLon,minLat,maxLon,maxLat`.
 func importPeaks(args []string) error {
 	fs := flag.NewFlagSet("import-peaks", flag.ContinueOnError)
 	bboxFlag := fs.String("bbox", "", "minLon,minLat,maxLon,maxLat (WGS84)")

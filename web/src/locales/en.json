@@ -225,7 +225,7 @@
     "askNewLink": "Ask for a new link.",
     "askAdminNewLink": "Ask an admin for a new link.",
     "sendNewLink": "Send a new link",
-    "inviteTitle": "Welcome to GPX Viewer",
+    "inviteTitle": "Welcome to kipitrek",
     "newPasswordTitle": "Choose a new password",
     "inviteDescription": "Choose a password to finish creating your account.",
     "newPasswordDescription": "You will be signed out everywhere else.",
@@ -698,7 +698,7 @@
   },
   "home": {
     "meta": {
-      "title": "GPX Viewer: all your hikes on one map",
+      "title": "kipitrek: all your hikes on one map",
       "description": "Import GPX files from your watch or phone and see every hike on one map. Elevation, speed, heart rate and cadence charts, route replay, a hiking calendar and sharing with friends.",
       "ogDescription": "Import GPX files from your watch or phone and see every hike on one map, with elevation and heart rate charts, route replay and a hiking calendar.",
       "appDescription": "Import GPX files and see every hike on one map, with elevation, speed and heart rate charts, route replay, a hiking calendar and sharing with friends."
@@ -707,7 +707,7 @@
     "createAnAccount": "Create an account",
     "hero": {
       "title": "Every hike you've recorded, on one map.",
-      "text": "Import the GPX files from your watch or phone. GPX Viewer draws all your trails together, then lets you open any one to see how the climb really went."
+      "text": "Import the GPX files from your watch or phone. kipitrek draws all your trails together, then lets you open any one to see how the climb really went."
     },
     "mapAlt": "Topographic map with five hiking tracks, one highlighted crossing the main summit",
     "distance": "Distance",

@@ -4,7 +4,7 @@ import (
 	"math"
 	"sort"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 const (

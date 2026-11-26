@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // Profile is a user as seen by a viewer. CanView tells whether the viewer

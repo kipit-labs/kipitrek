@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/dto"
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/dto"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func writeJSON(w http.ResponseWriter, status int, v any) {

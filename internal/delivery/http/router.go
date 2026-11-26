@@ -9,8 +9,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	chimw "github.com/go-chi/chi/v5/middleware"
 
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/handler"
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/middleware"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/handler"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/middleware"
 )
 
 type Deps struct {

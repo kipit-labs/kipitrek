@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // DefaultURL is the main public Overpass instance.
@@ -44,7 +44,7 @@ func (c *Client) Peaks(ctx context.Context, bbox domain.Bounds) ([]domain.Peak, 
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "gpx-viewer peak import")
+	req.Header.Set("User-Agent", "kipitrek peak import")
 	res, err := c.http.Do(req)
 	if err != nil {
 		return nil, err

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func TestPasswordReset(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 
 	"github.com/tkrajina/gpxgo/gpx"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 type Parser struct{}

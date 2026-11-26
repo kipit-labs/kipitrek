@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 type PasswordResetRepository struct {

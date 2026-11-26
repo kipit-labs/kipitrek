@@ -7,9 +7,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/dto"
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/middleware"
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/dto"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/middleware"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 type AuthService interface {

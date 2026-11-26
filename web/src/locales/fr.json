@@ -228,7 +228,7 @@
     "askNewLink": "Demandez un nouveau lien.",
     "askAdminNewLink": "Demandez un nouveau lien à un administrateur.",
     "sendNewLink": "Envoyer un nouveau lien",
-    "inviteTitle": "Bienvenue sur GPX Viewer",
+    "inviteTitle": "Bienvenue sur kipitrek",
     "newPasswordTitle": "Choisissez un nouveau mot de passe",
     "inviteDescription": "Choisissez un mot de passe pour finir de créer votre compte.",
     "newPasswordDescription": "Vous serez déconnecté partout ailleurs.",
@@ -717,7 +717,7 @@
   },
   "home": {
     "meta": {
-      "title": "GPX Viewer : toutes vos randonnées sur une carte",
+      "title": "kipitrek : toutes vos randonnées sur une carte",
       "description": "Importez les fichiers GPX de votre montre ou de votre téléphone et voyez toutes vos randonnées sur une carte. Graphiques d'altitude, de vitesse, de fréquence cardiaque et de cadence, relecture du parcours, calendrier de randonnée et partage avec vos amis.",
       "ogDescription": "Importez les fichiers GPX de votre montre ou de votre téléphone et voyez toutes vos randonnées sur une carte, avec graphiques d'altitude et de fréquence cardiaque, relecture du parcours et calendrier de randonnée.",
       "appDescription": "Importez des fichiers GPX et voyez toutes vos randonnées sur une carte, avec graphiques d'altitude, de vitesse et de fréquence cardiaque, relecture du parcours, calendrier de randonnée et partage avec vos amis."
@@ -726,7 +726,7 @@
     "createAnAccount": "Créer un compte",
     "hero": {
       "title": "Toutes vos randonnées, sur une seule carte.",
-      "text": "Importez les fichiers GPX de votre montre ou de votre téléphone. GPX Viewer trace tous vos parcours ensemble, puis vous laisse ouvrir chacun pour voir comment la montée s'est vraiment passée."
+      "text": "Importez les fichiers GPX de votre montre ou de votre téléphone. kipitrek trace tous vos parcours ensemble, puis vous laisse ouvrir chacun pour voir comment la montée s'est vraiment passée."
     },
     "mapAlt": "Carte topographique avec cinq traces de randonnée, dont une en évidence qui passe par le sommet principal",
     "distance": "Distance",

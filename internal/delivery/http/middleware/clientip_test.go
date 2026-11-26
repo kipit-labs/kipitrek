@@ -6,7 +6,7 @@ import (
 	"net/netip"
 	"testing"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func TestRealIP(t *testing.T) {

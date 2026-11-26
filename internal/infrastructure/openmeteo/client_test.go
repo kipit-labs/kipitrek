@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func serve(t *testing.T, body string) (*httptest.Server, *url.Values) {

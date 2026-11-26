@@ -15,7 +15,7 @@ import (
 	"golang.org/x/image/font/gofont/gobold"
 	"golang.org/x/image/font/gofont/goregular"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 const (
@@ -64,7 +64,7 @@ func Render(h *domain.Hike, segments []domain.Segment) ([]byte, error) {
 	y := float64(pad + 20)
 	dc.SetFontFace(face(bold, 22))
 	dc.SetColor(track)
-	dc.DrawString("GPX Viewer", panelX, y+22)
+	dc.DrawString("kipitrek", panelX, y+22)
 	y += 64
 
 	dc.SetFontFace(face(bold, 46))

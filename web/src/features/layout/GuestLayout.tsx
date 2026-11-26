@@ -14,7 +14,7 @@ export function GuestLayout() {
         {/* A full page load: the home page is served by the server, not the app. */}
         <a href="/" className="flex items-center gap-2 font-semibold">
           <MountainSnow className="size-5" />
-          GPX Viewer
+          kipitrek
         </a>
         <div className="flex items-center gap-2">
           <LanguageSwitcher />

@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // Run with: TEST_DATABASE_URL=... go test -tags integration ./internal/infrastructure/postgres/

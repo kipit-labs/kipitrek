@@ -71,7 +71,7 @@ function Header() {
     <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
       <a href="/" className="flex items-center gap-2 rounded-md font-display text-lg font-bold tracking-tight">
         <MountainSnow className="text-trail size-6" aria-hidden />
-        GPX Viewer
+        kipitrek
       </a>
       <nav className="flex items-center gap-1 text-sm font-medium" aria-label={t('home.account')}>
         {/* Plain links: the server remembers the choice and serves the page in that language. */}
@@ -492,9 +492,9 @@ function Footer() {
     <footer className="border-line text-ink-soft mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t px-4 py-8 text-sm sm:px-8">
       <span className="flex items-center gap-2">
         <MountainSnow className="size-4" aria-hidden />
-        GPX Viewer
+        kipitrek
       </span>
-      <a href="https://github.com/MatHoyer/gpx-viewer" className="hover:text-ink rounded underline-offset-4 hover:underline">
+      <a href="https://github.com/kipit-labs/kipitrek" className="hover:text-ink rounded underline-offset-4 hover:underline">
         {t('home.source')}
       </a>
     </footer>

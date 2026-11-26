@@ -14,8 +14,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/middleware"
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/middleware"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // homeFile is the prerendered landing page, shown at / to signed-out visitors.
@@ -191,7 +191,7 @@ func withHikeMeta(page []byte, h *domain.Hike, base string) []byte {
 	tags := fmt.Sprintf(`<meta name="description" content="%[2]s" />
     <link rel="canonical" href="%[3]s" />
     <meta property="og:type" content="article" />
-    <meta property="og:site_name" content="GPX Viewer" />
+    <meta property="og:site_name" content="kipitrek" />
     <meta property="og:title" content="%[1]s" />
     <meta property="og:description" content="%[2]s" />
     <meta property="og:url" content="%[3]s" />
@@ -200,6 +200,6 @@ func withHikeMeta(page []byte, h *domain.Hike, base string) []byte {
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
   </head>`, title, desc, url, image)
-	page = bytes.Replace(page, []byte("<title>GPX Viewer</title>"), []byte("<title>"+title+" · GPX Viewer</title>"), 1)
+	page = bytes.Replace(page, []byte("<title>kipitrek</title>"), []byte("<title>"+title+" · kipitrek</title>"), 1)
 	return bytes.Replace(page, []byte("</head>"), []byte(tags), 1)
 }
