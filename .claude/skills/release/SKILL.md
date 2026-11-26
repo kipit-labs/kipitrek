@@ -1,88 +1,58 @@
 ---
 name: release
-description: Cut a GPX-viewer release end to end - run scripts/release.sh, wait for the GHCR image, then bump the image in compose.yaml and push (kipitiny git sync deploys it).
+description: Cut a kipitrek release and deploy it — bump `VERSION` in a `chore(release): X.Y.Z` PR and merge it (the release workflow tags and publishes the image), then bump the image in compose.yaml (kipitiny git sync deploys it). Use when the user says "release", "cut a release", "deploy", or invokes /release [version|major|minor|patch].
 argument-hint: "[patch|minor|major|X.Y.Z]"
 disable-model-invocation: true
 ---
 
-# Release GPX-viewer
+# Release
 
-Invoking this skill is the go-ahead to release, push to `main`, and deploy.
-Stop and report on any failure; never force-push or skip a failed step.
+A release is a chore PR that bumps the root `VERSION` file. Merging it into `main` runs
+`.github/workflows/release.yml`: it tags the merged commit `X.Y.Z`, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` +
+`:latest` (amd64, arm64) and the GitHub release with generated notes. It refuses a `VERSION` that isn't above the last
+tag. Tags are bare semver, no `v` prefix. Prod only changes in step 6.
 
-## 1. Pick the bump
+## Steps
 
-If `$ARGUMENTS` is given, use it. Otherwise derive it from commits since the
-latest tag (`git log $(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)..HEAD --format=%s`):
-`!` or `BREAKING CHANGE` → `major`, any `feat` → `minor`, else `patch`.
-If there are no commits since the latest tag, stop: nothing to release.
-State the chosen bump and resulting version in one line, then continue.
+1. **Preflight** — stop and report if any fails:
+   - on `main`, working tree clean (`git status --porcelain` empty)
+   - `git fetch --tags origin`, then local `main` == `origin/main`
+   - there are commits since the last tag (`git describe --tags --abbrev=0`)
+   - `make test` and `make lint` green
 
-## 2. Run the release script
+2. **Pick the version.** `$ARGUMENTS` may be `X.Y.Z` or `major|minor|patch`. Without one, infer from the
+   conventional commits since the last tag (`git log <last>..HEAD --format=%s`): any `!:` or `BREAKING CHANGE` →
+   major, any `feat` → minor, otherwise patch.
 
-From the repo root:
+3. **Confirm with the user**: last tag → new version and the commit subjects included. Wait for a yes.
 
-```bash
-printf 'y\n' | scripts/release.sh <bump>
-```
+4. **Release PR, auto-merged:**
+   ```sh
+   git switch -c chore/release-X.Y.Z
+   printf 'X.Y.Z\n' > VERSION
+   git commit -am "chore(release): X.Y.Z"
+   git push -u origin chore/release-X.Y.Z
+   gh pr create --title "chore(release): X.Y.Z" --body "Release X.Y.Z."
+   gh pr merge --rebase --auto
+   ```
+   No AI attribution on the commit or the PR. Never push a tag by hand: the workflow makes it.
 
-Run with a 10 min timeout (quality gates build the web app). The script
-checks the tree, runs gates, commits `chore(release): X.Y.Z`, tags, and pushes
-`main` + the tag. The push prints "3 of 3 required status checks are
-expected": that is the admin-bypass warning, not a failure. Read the new
-version from the `chore(release): X.Y.Z` line of the output.
+5. **Wait for the image.** Once the PR is `MERGED`: `git switch main && git pull --ff-only && git branch -d
+   chore/release-X.Y.Z`, then watch the run (`gh run list --workflow release.yml --limit 1`, `gh run watch <id>
+   --exit-status`; on failure stop and show `gh run view <id> --log-failed`). Check the image is pullable:
+   `docker manifest inspect ghcr.io/kipit-labs/kipitrek:X.Y.Z`.
 
-## 3. Wait for the image
+6. **Deploy.** Prod is the kipitiny project `gpx-viewer` (`manager.mathieuhoyer.fr`), synced from `compose.yaml`
+   on `main`. Pin the tag only now that the image exists, so a sync never asks for a missing image:
+   ```sh
+   git switch -c chore/deploy-X.Y.Z
+   # compose.yaml: image: ghcr.io/kipit-labs/kipitrek:X.Y.Z (exact version, never latest); nothing else changes
+   git commit -am "chore(deploy): run X.Y.Z on kipitiny"
+   git push -u origin chore/deploy-X.Y.Z
+   gh pr create --title "chore(deploy): run X.Y.Z on kipitiny" --body "Deploy X.Y.Z."
+   gh pr merge --rebase --auto
+   ```
+   kipitiny polls the branch every 5 minutes; the kipitiny MCP `sync_project_git` (project `gpx-viewer`) deploys at
+   once, then check `get_app_status` for `gpx-viewer/app`.
 
-The tag fires `docker.yml` (multi-arch build, ~several minutes) and
-`release.yml` (GitHub release). Find and watch the Docker run:
-
-```bash
-gh run list --workflow docker.yml --branch X.Y.Z --limit 1 --json databaseId --jq '.[0].databaseId'
-gh run watch <id> --exit-status
-```
-
-The run may take a few seconds to appear after the push; retry the list a
-couple of times. Run `gh run watch` in the background if it would exceed the
-Bash timeout. If the run fails, stop and show `gh run view <id> --log-failed`.
-
-Then confirm the image is pullable (GHCR package is public):
-
-```bash
-docker manifest inspect ghcr.io/mathoyer/gpx-viewer:X.Y.Z >/dev/null && echo ok
-```
-
-Also check `gh release view X.Y.Z` exists; report if the Release workflow failed,
-but it doesn't block the deploy.
-
-## 4. Bump compose.yaml
-
-Prod runs on kipitiny (`manager.mathieuhoyer.fr`, project `gpx-viewer`),
-linked to `compose.yaml` on `main`. Pin the tag only now that the image
-exists, so a sync never asks for a missing image.
-
-```bash
-git status --porcelain            # must be empty, else stop
-git pull --ff-only
-```
-
-Edit `compose.yaml`: change the `image: ghcr.io/mathoyer/gpx-viewer:<old>`
-line to `:X.Y.Z` (pinned exact version, never `latest`). Verify with
-`git diff` that only that line changed.
-
-```bash
-git commit -am "chore(deploy): run X.Y.Z on kipitiny"
-git push origin main
-```
-
-No AI attribution in the commit.
-
-kipitiny polls the branch every 5 min. To deploy at once, call the kipitiny
-MCP `sync_project_git` (project `gpx-viewer`), then check
-`get_app_status` for `gpx-viewer/app`. If the MCP isn't available, let the
-poll pick it up.
-
-## 5. Report
-
-One short summary: version, GitHub release URL, image tag, deploy commit
-hash, and the kipitiny deployment status.
+7. **Report**: version, GitHub release URL, image tag, deploy commit and the kipitiny deployment status.

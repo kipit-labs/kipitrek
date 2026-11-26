@@ -1,43 +1,55 @@
-name: Release
+# Merging a change of VERSION (a release PR) into main tags that commit 1.2.3
+# and publishes ghcr.io/kipit-labs/kipitrek:1.2.3 and :latest for amd64 and
+# arm64, with the GitHub release. Deploying it is a compose.yaml bump.
+name: release
 
 on:
   push:
-    tags: ['[0-9]+.[0-9]+.[0-9]+']
+    branches: [main]
+    paths: [VERSION]
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
-  release:
-    name: GitHub release
+  image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          # Full history and tags to diff against the previous release.
-          fetch-depth: 0
-
-      - name: Build release notes
-        env:
-          TAG: ${{ github.ref_name }}
+          fetch-depth: 0 # the tags, to check the new version against
+      - name: Tag
+        id: tag
         run: |
-          prev=$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname \
-            | grep -vx "$TAG" | head -n1 || true)
-          range=${prev:+$prev..}$TAG
-          {
-            echo "## Changes"
-            echo
-            git log --no-merges --format='- %s (%h)' "$range" \
-              | grep -v 'chore(release):' || true
-            if [ -n "$prev" ]; then
-              echo
-              echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$prev...$TAG"
-            fi
-          } > notes.md
-          cat notes.md
-
-      - name: Create release
+          v=$(cat VERSION)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          # A re-run finds its own tag.
+          if git rev-parse -q --verify "refs/tags/$v" >/dev/null; then
+            test "$(git rev-list -n1 "$v")" = "$GITHUB_SHA" || { echo "::error::tag $v is on another commit"; exit 1; }
+            exit 0
+          fi
+          echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || { echo "::error::VERSION $v is not X.Y.Z"; exit 1; }
+          last=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' | sort -V | tail -1)
+          test "$(printf '%s\n%s\n' "$last" "$v" | sort -V | tail -1)" = "$v" || { echo "::error::$v is not above $last"; exit 1; }
+          git tag "$v" && git push origin "$v"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/kipit-labs/kipitrek:${{ steps.tag.outputs.version }}
+            ghcr.io/kipit-labs/kipitrek:latest
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" --title "$TAG" --notes-file notes.md --verify-tag
+        run: gh release create "${{ steps.tag.outputs.version }}" --generate-notes --verify-tag
