@@ -1,7 +1,7 @@
 import { Blobatar } from '@blobatar/react'
 import 'blobatar/motion.css'
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@kipit-labs/kipitidy/avatar'
 import { cn } from '@/lib/utils'
 
 import { displayName, type Person } from './displayName'

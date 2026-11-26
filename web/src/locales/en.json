@@ -682,9 +682,7 @@
     "zoomOut": "Zoom out",
     "locate": "Find my location",
     "fullscreen": "Toggle fullscreen",
-    "resetBearing": "Reset bearing to north",
-    "commandTitle": "Command Palette",
-    "commandDescription": "Search for a command to run..."
+    "resetBearing": "Reset bearing to north"
   },
   "light": {
     "night": "Night",

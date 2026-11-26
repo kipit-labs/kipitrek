@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import { Button } from '@kipit-labs/kipitidy/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@kipit-labs/kipitidy/select'
-import { Slider } from '@/components/ui/slider'
-import { Toggle } from '@/components/ui/toggle'
+import { Slider } from '@kipit-labs/kipitidy/slider'
+import { Toggle } from '@kipit-labs/kipitidy/toggle'
 import { formatClock, formatDistance, formatElevation, formatNumber, formatTime } from '@/lib/format'
 
 import { valueAt, type Profile } from './profile'

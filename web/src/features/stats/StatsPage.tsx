@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@kipit-labs/kipitidy/chart'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@kipit-labs/kipitidy/select'
 import { Skeleton } from '@kipit-labs/kipitidy/skeleton'
 import { Segmented, SegmentedItem } from '@kipit-labs/kipitidy'

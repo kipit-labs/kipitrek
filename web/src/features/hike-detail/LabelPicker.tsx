@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@kipit-labs/kipitidy/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@kipit-labs/kipitidy/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@kipit-labs/kipitidy/popover'
 import { MAX_LABEL_LENGTH, MAX_LABELS } from '@/features/hikes/api'
 import { useLabels } from '@/features/hikes/useHikes'
 

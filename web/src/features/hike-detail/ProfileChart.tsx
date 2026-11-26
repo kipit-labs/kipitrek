@@ -1,7 +1,7 @@
 import { memo, useMemo } from 'react'
 import { Area, AreaChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 
-import { ChartContainer } from '@/components/ui/chart'
+import { ChartContainer } from '@kipit-labs/kipitidy/chart'
 
 import { CHART, formatAxisX } from './layout'
 import type { Axis } from './profile'
