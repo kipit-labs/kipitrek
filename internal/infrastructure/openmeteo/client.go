@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 const hourly = "temperature_2m,apparent_temperature,precipitation,snowfall,wind_speed_10m,wind_gusts_10m,cloud_cover,weather_code"
@@ -75,7 +75,7 @@ func (c *Client) Hourly(ctx context.Context, qs []domain.WeatherQuery) ([]domain
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "gpx-viewer weather")
+	req.Header.Set("User-Agent", "kipitrek weather")
 	res, err := c.http.Do(req)
 	if err != nil {
 		return nil, err

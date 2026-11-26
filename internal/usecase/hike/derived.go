@@ -6,7 +6,7 @@ import (
 	"math"
 	"slices"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // DerivedVersion is bumped whenever derive computes something new, so stored

@@ -7,7 +7,7 @@ dev-db: ## Start PostGIS and Mailpit (inbox at http://localhost:8025)
 	docker compose up -d db mailpit
 
 dev-api: ## Run the API locally (serves the last frontend build)
-	go run ./cmd/api
+	go run ./cmd/kipitrek
 
 dev-web: ## Vite dev server with /api proxied to :8080
 	cd web && pnpm dev
@@ -16,7 +16,7 @@ web: ## Build the frontend into web/dist (embedded in the Go binary)
 	cd web && pnpm install --frozen-lockfile && pnpm build
 
 build: web ## Build the single binary
-	go build -o bin/api ./cmd/api
+	go build -o bin/kipitrek ./cmd/kipitrek
 
 test:
 	go test ./...
@@ -38,4 +38,4 @@ release: ## Bump, commit, tag and push a release (BUMP=patch|minor|major|X.Y.Z)
 	scripts/release.sh $(BUMP)
 
 import-peaks: ## Load OSM peaks in a region: make import-peaks BBOX=minLon,minLat,maxLon,maxLat
-	go run ./cmd/api import-peaks -bbox $(BBOX)
+	go run ./cmd/kipitrek import-peaks -bbox $(BBOX)

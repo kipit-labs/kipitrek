@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func parseFixture(t *testing.T, name string) (*domain.ParsedTrack, error) {

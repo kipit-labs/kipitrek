@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func TestPeaks(t *testing.T) {

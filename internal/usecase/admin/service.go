@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
-	"github.com/MatHoyer/gpx-viewer/internal/usecase/account"
+	"github.com/kipit-labs/kipitrek/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/usecase/account"
 )
 
 const (

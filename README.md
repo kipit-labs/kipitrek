@@ -1,4 +1,4 @@
-# GPX Viewer
+# kipitrek
 
 Import your GPX files and see all your hikes on one map.
 
@@ -53,7 +53,7 @@ make lint
 Clean architecture: dependencies point inward, `domain` has no framework imports.
 
 ```
-cmd/api/                    composition root (wiring + HTTP server)
+cmd/kipitrek/               composition root (wiring + HTTP server)
 internal/
   domain/                   entities, repository & service ports, domain errors
   usecase/                  application logic (auth, hike)
@@ -66,7 +66,7 @@ internal/
 web/                        React app; web/embed.go embeds web/dist
 ```
 
-Adding a feature usually means: an entity/port in `domain`, a service in `usecase`, an adapter in `infrastructure`, and a handler in `delivery/http`, wired in `cmd/api/main.go`.
+Adding a feature usually means: an entity/port in `domain`, a service in `usecase`, an adapter in `infrastructure`, and a handler in `delivery/http`, wired in `cmd/kipitrek/main.go`.
 
 ### Data
 
@@ -77,7 +77,7 @@ Adding a feature usually means: an entity/port in `domain`, a service in `usecas
 - Stats derived from the GPX (elevation loss, min/max elevation, moving time, and best efforts: the fastest 1, 5, 10, 21.1 and 42.2 km in `hike_best_efforts`, and the zoom-14 tiles crossed in `hike_tiles`) are computed on import and stamped with `derived_version`; on startup a background job recomputes hikes stored by an older version (bump `hike.DerivedVersion` when adding one).
 - `GET /api/hikes/tracks` returns a simplified GeoJSON `FeatureCollection` (`ST_SimplifyPreserveTopology`) for the map.
 - A hike with `planned` set is a route not walked yet: it shows (dashed) on the map but is left out of stats, records, tiles, summits and repeated routes until marked done. Only the route of a planned GPX is kept: timestamps and sensor data (heart rate, cadence, temperature) are dropped, since they belong to whoever recorded it. Marking it done can take the GPX recorded on the walk, which replaces the route.
-- Peaks come from OpenStreetMap (`natural=peak` nodes with a name) and are loaded per region with `api import-peaks -bbox minLon,minLat,maxLon,maxLat` (same environment as the server; `-overpass` picks another Overpass instance). Summits are matched on demand, so new peaks apply to past hikes too.
+- Peaks come from OpenStreetMap (`natural=peak` nodes with a name) and are loaded per region with `kipitrek import-peaks -bbox minLon,minLat,maxLon,maxLat` (same environment as the server; `-overpass` picks another Overpass instance). Summits are matched on demand, so new peaks apply to past hikes too.
 
 ### API
 
@@ -152,6 +152,6 @@ Adding a feature usually means: an entity/port in `domain`, a service in `usecas
 | `SMTP_HOST` | empty | mail server; without it email is off (see Self-hosting) |
 | `SMTP_PORT` | `587` | `465` uses implicit TLS, other ports STARTTLS when offered |
 | `SMTP_USERNAME` / `SMTP_PASSWORD` | empty | no auth when empty; never sent unencrypted except to localhost |
-| `SMTP_FROM` | required with `SMTP_HOST` | e.g. `GPX Viewer <noreply@example.com>` |
+| `SMTP_FROM` | required with `SMTP_HOST` | e.g. `kipitrek <noreply@example.com>` |
 
 Accounts created before email verification existed start unverified: with SMTP set, their first sign-in attempt emails them a link.

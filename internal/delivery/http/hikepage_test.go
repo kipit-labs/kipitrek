@@ -11,7 +11,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // publicHikes shows anonymous viewers only the hikes it holds.
@@ -30,7 +30,7 @@ func TestHikePageMeta(t *testing.T) {
 	h := NewRouter(Deps{
 		Authenticator: tokenAuth("good"),
 		AppURL:        "https://hikes.example/",
-		Static:        fstest.MapFS{"index.html": {Data: []byte("<html><head><title>GPX Viewer</title></head><body>app</body></html>")}},
+		Static:        fstest.MapFS{"index.html": {Data: []byte("<html><head><title>kipitrek</title></head><body>app</body></html>")}},
 		HikeMeta:      publicHikes{public.ID: public},
 	})
 
@@ -41,7 +41,7 @@ func TestHikePageMeta(t *testing.T) {
 		t.Fatalf("status %d, body %q", rec.Code, page)
 	}
 	for _, want := range []string{
-		`<title>Lac &#34;Blanc&#34; &lt;3 · GPX Viewer</title>`,
+		`<title>Lac &#34;Blanc&#34; &lt;3 · kipitrek</title>`,
 		`<meta property="og:title" content="Lac &#34;Blanc&#34; &lt;3" />`,
 		`content="12.3 km · 850 m D+ · September 20, 2026 · by Ana"`,
 		`<meta property="og:image" content="https://hikes.example/api/hikes/` + public.ID.String() + `/card.png" />`,
@@ -54,7 +54,7 @@ func TestHikePageMeta(t *testing.T) {
 
 	for _, path := range []string{"/hikes/" + uuid.NewString(), "/hikes/not-an-id"} {
 		body, _ := io.ReadAll(get(h, path, "").Body)
-		if strings.Contains(string(body), "og:") || !strings.Contains(string(body), "<title>GPX Viewer</title>") {
+		if strings.Contains(string(body), "og:") || !strings.Contains(string(body), "<title>kipitrek</title>") {
 			t.Errorf("%s leaks preview tags: %s", path, body)
 		}
 	}

@@ -3,7 +3,7 @@ package dto
 import (
 	"math"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // Profile is a columnar time/distance series: index i of every array is the

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 var t0 = time.Date(2026, 7, 1, 8, 0, 0, 0, time.UTC)

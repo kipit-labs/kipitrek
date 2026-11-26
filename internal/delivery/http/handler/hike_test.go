@@ -13,8 +13,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/MatHoyer/gpx-viewer/internal/delivery/http/middleware"
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/delivery/http/middleware"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 type fakeAuth struct{ user *domain.User }

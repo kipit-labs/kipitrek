@@ -10,7 +10,7 @@ import (
 	"github.com/twpayne/go-geom/encoding/ewkbhex"
 	"github.com/twpayne/go-geom/encoding/wkb"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 const srid = 4326

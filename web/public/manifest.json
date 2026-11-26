@@ -1,6 +1,6 @@
 {
-  "name": "GPX Viewer",
-  "short_name": "GPX Viewer",
+  "name": "kipitrek",
+  "short_name": "kipitrek",
   "description": "Record, plan and relive your hikes.",
   "start_url": "/",
   "scope": "/",

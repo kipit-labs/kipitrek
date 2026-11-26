@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 // Lag is how long after a hike ends its weather is fetched, so the archive

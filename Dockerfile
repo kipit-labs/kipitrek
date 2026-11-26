@@ -19,9 +19,9 @@ COPY cmd/ cmd/
 COPY internal/ internal/
 COPY web/embed.go web/
 COPY --from=web /src/web/dist web/dist
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /out/api ./cmd/api
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /out/kipitrek ./cmd/kipitrek
 
 FROM gcr.io/distroless/static-debian12:nonroot
-COPY --from=api /out/api /api
+COPY --from=api /out/kipitrek /kipitrek
 EXPOSE 8080
-ENTRYPOINT ["/api"]
+ENTRYPOINT ["/kipitrek"]

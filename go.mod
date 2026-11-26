@@ -1,4 +1,4 @@
-module github.com/MatHoyer/gpx-viewer
+module github.com/kipit-labs/kipitrek
 
 go 1.26.3
 

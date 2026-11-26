@@ -57,7 +57,7 @@ export function AppLayout() {
         <SidebarHeader className="gap-3">
           <div className="flex items-center gap-2 px-2 pt-1 font-semibold">
             <MountainSnow className="size-5" />
-            GPX Viewer
+            kipitrek
             <span className="text-muted-foreground text-xs font-normal tabular-nums">v{__APP_VERSION__}</span>
           </div>
           <UploadDialog />

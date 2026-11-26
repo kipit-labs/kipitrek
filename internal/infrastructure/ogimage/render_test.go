@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MatHoyer/gpx-viewer/internal/domain"
+	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
 func TestRender(t *testing.T) {

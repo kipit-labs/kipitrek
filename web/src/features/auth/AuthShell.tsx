@@ -12,7 +12,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
         {/* A full page load: the home page is served by the server, not the app. */}
         <a href="/" className="flex items-center justify-center gap-2 text-lg font-semibold">
           <MountainSnow className="size-6" />
-          GPX Viewer
+          kipitrek
         </a>
         <Card>{children}</Card>
         <LanguageSwitcher className="mx-auto" />

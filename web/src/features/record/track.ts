@@ -74,7 +74,7 @@ export function toGpx(segments: Segments, name: string): string {
     .join('')
   return (
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<gpx version="1.1" creator="GPX Viewer" xmlns="http://www.topografix.com/GPX/1/1">' +
+    '<gpx version="1.1" creator="kipitrek" xmlns="http://www.topografix.com/GPX/1/1">' +
     `<trk><name>${escapeXml(name)}</name>${segs}</trk></gpx>\n`
   )
 }
