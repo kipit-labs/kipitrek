@@ -1,6 +1,10 @@
-# kipitrek
+<p align="center"><img src="web/public/favicon.svg" alt="" width="96"></p>
 
-Import your GPX files and see all your hikes on one map.
+<h1 align="center">kipitrek</h1>
+
+<p align="center">
+  <b>Import your GPX files and see all your hikes on one map.</b>
+</p>
 
 - **Backend**: Go, chi, GORM (AutoMigrate), PostgreSQL + PostGIS
 - **Frontend**: React, Vite, TypeScript, shadcn/ui, [mapcn](https://mapcn.dev) (MapLibre)
