@@ -1,10 +1,13 @@
 include $(wildcard .env)
 export
 
-.PHONY: dev-db dev-api dev-web web build test test-integration lint up down release import-peaks
+# compose.yaml is production's (kipitiny); local runs use docker-compose.yml.
+COMPOSE := docker compose -f docker-compose.yml
+
+.PHONY: dev-db dev-api dev-web web build test test-integration lint up down import-peaks
 
 dev-db: ## Start PostGIS and Mailpit (inbox at http://localhost:8025)
-	docker compose up -d db mailpit
+	$(COMPOSE) up -d db mailpit
 
 dev-api: ## Run the API locally (serves the last frontend build)
 	go run ./cmd/kipitrek
@@ -20,22 +23,22 @@ build: web ## Build the single binary
 
 test:
 	go test ./...
+	cd web && pnpm test
 
 test-integration: ## Needs `make dev-db`
 	TEST_DATABASE_URL=$(DATABASE_URL) go test -tags integration ./internal/infrastructure/postgres/
 
 lint:
+	@unformatted=$$(gofmt -l cmd internal web); if [ -n "$$unformatted" ]; then echo "Run gofmt on:"; echo "$$unformatted"; exit 1; fi
 	go vet ./...
+	go vet -tags integration ./...
 	cd web && pnpm lint
 
 up: ## Build and run app + db
-	docker compose up --build -d
+	$(COMPOSE) up --build -d
 
 down:
-	docker compose down
-
-release: ## Bump, commit, tag and push a release (BUMP=patch|minor|major|X.Y.Z)
-	scripts/release.sh $(BUMP)
+	$(COMPOSE) down
 
 import-peaks: ## Load OSM peaks in a region: make import-peaks BBOX=minLon,minLat,maxLon,maxLat
 	go run ./cmd/kipitrek import-peaks -bbox $(BBOX)

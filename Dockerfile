@@ -8,6 +8,7 @@ RUN corepack enable
 COPY web/package.json web/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY web/ ./
+COPY VERSION /src/VERSION
 RUN pnpm build
 
 FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS api
