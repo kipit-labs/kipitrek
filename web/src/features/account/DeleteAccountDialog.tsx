@@ -13,9 +13,9 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { FloatingInput } from '@/components/ui/floating-input'
+} from '@kipit-labs/kipitidy/alert-dialog'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { FloatingInput } from '@kipit-labs/kipitidy/floating-input'
 import type { User } from '@/features/auth/api'
 import { useDeleteAccount } from '@/features/auth/useAuth'
 import { ApiError } from '@/lib/api'

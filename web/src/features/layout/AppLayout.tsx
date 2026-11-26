@@ -17,7 +17,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   useSidebar,
-} from '@/components/ui/sidebar'
+} from '@kipit-labs/kipitidy/sidebar'
 import { NavUser } from '@/features/account/NavUser'
 import { UploadDialog } from '@/features/hikes/UploadDialog'
 import { useRecord } from '@/features/record/store'

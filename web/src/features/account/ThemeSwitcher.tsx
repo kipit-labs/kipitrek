@@ -1,8 +1,7 @@
 import { useTheme } from 'next-themes'
 import { useTranslation } from 'react-i18next'
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Segmented, SegmentedItem, Tip } from '@kipit-labs/kipitidy'
 
 import { themes } from './themes'
 
@@ -12,27 +11,20 @@ export function ThemeSwitcher({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme()
 
   return (
-    <ToggleGroup
-      type="single"
+    <Segmented
       size="sm"
-      variant="outline"
-      spacing={0}
-      value={theme}
-      onValueChange={(v) => v && setTheme(v)}
+      value={theme ?? 'system'}
+      onValueChange={setTheme}
       aria-label={t('nav.theme')}
       className={className}
     >
       {themes.map(({ value, icon: Icon }) => (
-        <Tooltip key={value}>
-          <TooltipTrigger asChild>
-            {/* The tooltip trigger overwrites data-state, so selection is styled from aria-checked. */}
-            <ToggleGroupItem value={value} aria-label={t(`theme.${value}`)} className="aria-checked:bg-muted">
-              <Icon />
-            </ToggleGroupItem>
-          </TooltipTrigger>
-          <TooltipContent>{t(`theme.${value}`)}</TooltipContent>
-        </Tooltip>
+        <Tip key={value} content={t(`theme.${value}`)}>
+          <SegmentedItem value={value} aria-label={t(`theme.${value}`)}>
+            <Icon />
+          </SegmentedItem>
+        </Tip>
       ))}
-    </ToggleGroup>
+    </Segmented>
   )
 }

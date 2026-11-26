@@ -696,9 +696,6 @@
     "weather": "Météo"
   },
   "ui": {
-    "sidebar": "Barre latérale",
-    "sidebarDescription": "Affiche la barre latérale mobile.",
-    "toggleSidebar": "Afficher ou masquer la barre latérale",
     "closePopup": "Fermer la fenêtre",
     "zoomIn": "Zoom avant",
     "zoomOut": "Zoom arrière",
@@ -706,9 +703,7 @@
     "fullscreen": "Plein écran",
     "resetBearing": "Réorienter vers le nord",
     "commandTitle": "Palette de commandes",
-    "commandDescription": "Rechercher une commande…",
-    "breadcrumb": "Fil d'Ariane",
-    "more": "Plus"
+    "commandDescription": "Rechercher une commande…"
   },
   "light": {
     "night": "Nuit",

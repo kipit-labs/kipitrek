@@ -2,7 +2,7 @@ import { ChevronDown, List } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { formatDate, formatDistance, formatElevation } from '@/lib/format'
 import { cn } from '@/lib/utils'
 

@@ -2,8 +2,8 @@ import { MailCheck } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
-import { CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { CardDescription, CardFooter, CardHeader, CardTitle } from '@kipit-labs/kipitidy/card'
 
 /**
  * Shown once a link was emailed: after registering, when signing in before the

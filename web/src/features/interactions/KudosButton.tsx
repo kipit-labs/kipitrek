@@ -2,7 +2,7 @@ import { ThumbsUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import type { Hike } from '@/features/hikes/api'
 import { cn } from '@/lib/utils'
 

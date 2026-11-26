@@ -13,8 +13,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
+} from '@kipit-labs/kipitidy/dropdown-menu'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@kipit-labs/kipitidy/sidebar'
 import type { User } from '@/features/auth/api'
 import { useLogout, useMe } from '@/features/auth/useAuth'
 

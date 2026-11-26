@@ -3,14 +3,14 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@kipit-labs/kipitidy/dropdown-menu'
 import { useMe } from '@/features/auth/useAuth'
 import { MarkDoneDialog } from '@/features/hike-detail/MarkDoneDialog'
 import { cn } from '@/lib/utils'

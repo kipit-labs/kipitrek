@@ -8,9 +8,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+} from '@kipit-labs/kipitidy/breadcrumb'
+import { Separator } from '@kipit-labs/kipitidy/separator'
+import { SidebarTrigger } from '@kipit-labs/kipitidy/sidebar'
 import { useMe } from '@/features/auth/useAuth'
 import { cn } from '@/lib/utils'
 

@@ -3,9 +3,9 @@ import { useState, type FormEvent } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 
-import { Button } from '@/components/ui/button'
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { FloatingInput } from '@/components/ui/floating-input'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@kipit-labs/kipitidy/card'
+import { FloatingInput } from '@kipit-labs/kipitidy/floating-input'
 import { errorMessage as describeError } from '@/lib/errors'
 
 import { AuthShell } from './AuthShell'

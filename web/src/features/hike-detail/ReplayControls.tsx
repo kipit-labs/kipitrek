@@ -2,8 +2,8 @@ import { Crosshair, Moon, Pause, Play, SkipBack, Sun, Sunrise, Sunset, type Luci
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@kipit-labs/kipitidy/select'
 import { Slider } from '@/components/ui/slider'
 import { Toggle } from '@/components/ui/toggle'
 import { formatClock, formatDistance, formatElevation, formatNumber, formatTime } from '@/lib/format'

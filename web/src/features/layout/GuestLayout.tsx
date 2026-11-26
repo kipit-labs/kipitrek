@@ -2,7 +2,7 @@ import { MountainSnow } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, Outlet } from 'react-router'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { LanguageSwitcher } from '@/features/account/LanguageSwitcher'
 
 /** Chrome for pages that signed-out visitors can open, like public profiles. */

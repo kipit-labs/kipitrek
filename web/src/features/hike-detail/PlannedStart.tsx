@@ -2,7 +2,7 @@ import { Moon, Sun, TriangleAlert, type LucideIcon } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { FloatingInput } from '@/components/ui/floating-input'
+import { FloatingInput } from '@kipit-labs/kipitidy/floating-input'
 import { estimateNote, estimatedDurationS } from '@/features/hikes/estimate'
 import { formatDuration, formatTime } from '@/lib/format'
 

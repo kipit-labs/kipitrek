@@ -13,7 +13,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@kipit-labs/kipitidy/dropdown-menu'
 import { Map, useMap, type MapRef } from '@/components/ui/map'
 
 import { basemapStyles, DEM_SOURCE_ID, demSource, useMapView, type Basemap } from './basemaps'

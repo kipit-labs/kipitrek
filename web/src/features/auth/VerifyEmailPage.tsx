@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 
-import { Button } from '@/components/ui/button'
-import { CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { CardDescription, CardFooter, CardHeader, CardTitle } from '@kipit-labs/kipitidy/card'
 import { ApiError } from '@/lib/api'
 import { errorMessage } from '@/lib/errors'
 

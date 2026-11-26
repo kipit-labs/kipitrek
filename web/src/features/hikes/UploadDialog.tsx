@@ -3,7 +3,7 @@ import { useRef, useState, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@kipit-labs/kipitidy/dialog'
 import { codeMessage, errorMessage } from '@/lib/errors'
 import { formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'

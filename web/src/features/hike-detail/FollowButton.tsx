@@ -2,7 +2,7 @@ import { Footprints } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { useRecord } from '@/features/record/store'
 
 /** Opens the recorder on this planned route; a recording already under way is kept as is. */

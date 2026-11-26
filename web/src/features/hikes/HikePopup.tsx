@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { MapPopup } from '@/components/ui/map'
 import { formatDate, formatDistance, formatDuration, formatElevation } from '@/lib/format'
 
