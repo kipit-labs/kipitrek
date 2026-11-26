@@ -1,4 +1,4 @@
-import { Activity, CalendarDays, ChartColumn, Footprints, Map as MapIcon, MountainSnow, TableProperties, UsersRound } from 'lucide-react'
+import { Activity, CalendarDays, ChartColumn, Footprints, Map as MapIcon, TableProperties, UsersRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, Outlet, useLocation } from 'react-router'
 
@@ -23,6 +23,8 @@ import { UploadDialog } from '@/features/hikes/UploadDialog'
 import { useRecord } from '@/features/record/store'
 import { useGps } from '@/features/record/useGps'
 import { useConnections } from '@/features/social/useSocial'
+
+import { Logo } from './Logo'
 
 // Your own hikes, then what friends share; labels are under nav.
 const groups = [
@@ -55,9 +57,8 @@ export function AppLayout() {
     <SidebarProvider>
       <Sidebar variant="inset">
         <SidebarHeader className="gap-3">
-          <div className="flex items-center gap-2 px-2 pt-1 font-semibold">
-            <MountainSnow className="size-5" />
-            kipitrek
+          <div className="flex items-center gap-2 px-2 pt-1">
+            <Logo className="text-lg" />
             <span className="text-muted-foreground text-xs font-normal tabular-nums">v{__APP_VERSION__}</span>
           </div>
           <UploadDialog />

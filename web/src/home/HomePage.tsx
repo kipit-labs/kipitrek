@@ -1,10 +1,11 @@
 import { Blobatar } from '@blobatar/react'
-import { Activity, Gauge, Mountain, MountainSnow, Pause, Thermometer, TrendingUp } from 'lucide-react'
+import { Activity, Gauge, Mountain, Pause, Thermometer, TrendingUp } from 'lucide-react'
 import { useMemo, type ReactNode } from 'react'
 import { I18nextProvider, useTranslation } from 'react-i18next'
 
 import i18n, { type Language } from '@/i18n'
 import { languageOptions } from '@/i18n/languages'
+import { LogoMark } from '@/features/layout/Logo'
 
 import { ascent, contours, featured, others, sampleTrack, toPath, type Sample } from './terrain'
 
@@ -70,7 +71,7 @@ function Header() {
   return (
     <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-8">
       <a href="/" className="flex items-center gap-2 rounded-md font-display text-lg font-bold tracking-tight">
-        <MountainSnow className="text-trail size-6" aria-hidden />
+        <LogoMark className="size-6" />
         kipitrek
       </a>
       <nav className="flex items-center gap-1 text-sm font-medium" aria-label={t('home.account')}>
@@ -491,7 +492,7 @@ function Footer() {
   return (
     <footer className="border-line text-ink-soft mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t px-4 py-8 text-sm sm:px-8">
       <span className="flex items-center gap-2">
-        <MountainSnow className="size-4" aria-hidden />
+        <LogoMark className="size-4" />
         kipitrek
       </span>
       <a href="https://github.com/kipit-labs/kipitrek" className="hover:text-ink rounded underline-offset-4 hover:underline">
