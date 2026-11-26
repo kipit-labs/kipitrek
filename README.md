@@ -12,7 +12,7 @@ Import your GPX files and see all your hikes on one map.
 ## Quick start
 
 ```bash
-docker compose -f docker-compose.yml up --build   # or: make up
+docker compose up --build
 ```
 
 Open http://localhost:8080, create an account and import `.gpx` files. The email verification link lands in Mailpit at http://localhost:8025.
@@ -47,7 +47,7 @@ make test-integration   # repository tests against the dev database
 make lint               # gofmt, go vet, oxlint
 ```
 
-Releases: a `chore(release): X.Y.Z` PR bumping `VERSION`; merging it tags, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` and creates the GitHub release (`.github/workflows/release.yml`). Production follows the image pinned in `compose.yaml`.
+Releases: a `chore(release): X.Y.Z` PR bumping `VERSION`; merging it tags, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` and creates the GitHub release (`.github/workflows/release.yml`). Production runs on the homelab's k3s cluster, which pins the image in its own manifests.
 
 ## Architecture
 
