@@ -1,9 +1,10 @@
-import { MountainSnow } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link, Outlet } from 'react-router'
 
 import { Button } from '@kipit-labs/kipitidy/button'
 import { LanguageSwitcher } from '@/features/account/LanguageSwitcher'
+
+import { Logo } from './Logo'
 
 /** Chrome for pages that signed-out visitors can open, like public profiles. */
 export function GuestLayout() {
@@ -12,9 +13,8 @@ export function GuestLayout() {
     <div className="flex h-svh flex-col">
       <header className="flex items-center justify-between gap-2 border-b px-4 py-2">
         {/* A full page load: the home page is served by the server, not the app. */}
-        <a href="/" className="flex items-center gap-2 font-semibold">
-          <MountainSnow className="size-5" />
-          kipitrek
+        <a href="/">
+          <Logo className="text-lg" />
         </a>
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
