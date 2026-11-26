@@ -12,6 +12,9 @@ the homelab k3s cluster (ArgoCD). `README.md` has the architecture, data model, 
   background job recomputes older hikes.
 - A planned hike stays out of stats, records, tiles, summits and repeated routes; a planned GPX keeps the route only
   (no times, no sensor data).
+- UI components come from `@kipit-labs/kipitidy` (imported per file: `@kipit-labs/kipitidy/button`), themed by its
+  `theme.css`. `web/src/components/ui/` only holds what the kit lacks (map, chart, command, popover…); a component
+  every kipit-labs app could use goes into the kit instead.
 - Every UI string goes through react-i18next, in both `web/src/locales/en.json` and `fr.json` (French plurals need
   `_many` too); API errors carry a `code` with a translation. Tests enforce both.
 - Mobile first: the PWA runs on iPhone (WebKit). No feature that needs a native wrapper.

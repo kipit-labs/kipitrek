@@ -2,8 +2,7 @@ import { ZoomOut } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Button, Segmented, SegmentedItem } from '@kipit-labs/kipitidy'
 import { airTemps, hourPlaces, type WeatherHour } from '@/features/hikes/weather'
 
 import { ChartOverlay } from './ChartOverlay'
@@ -40,19 +39,17 @@ export function ProfileCharts({ profile, startedAt, weatherHours }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <ToggleGroup
-          type="single"
+        <Segmented
           size="sm"
-          variant="outline"
           value={axis}
-          onValueChange={(v) => v && useReplay.getState().setAxis(v as Axis)}
+          onValueChange={(v) => useReplay.getState().setAxis(v as Axis)}
           aria-label={t('charts.xAxis')}
         >
-          <ToggleGroupItem value="dist">{t('hike.distance')}</ToggleGroupItem>
-          <ToggleGroupItem value="time" disabled={!profile.has.time}>
+          <SegmentedItem value="dist">{t('hike.distance')}</SegmentedItem>
+          <SegmentedItem value="time" disabled={!profile.has.time}>
             {t('charts.time')}
-          </ToggleGroupItem>
-        </ToggleGroup>
+          </SegmentedItem>
+        </Segmented>
         <Button variant="ghost" size="sm" disabled={!range} onClick={() => useReplay.getState().setRange(null)}>
           <ZoomOut />
           {t('charts.resetZoom')}
@@ -70,21 +67,16 @@ export function ProfileCharts({ profile, startedAt, weatherHours }: Props) {
               <span className="size-2 rounded-full" style={{ backgroundColor: s.color }} />
               <h3 className="text-muted-foreground font-medium">{s.label}</h3>
               {s.key === 'speed' && (
-                <ToggleGroup
-                  type="single"
+                <Segmented
                   size="sm"
                   value={speedUnit}
-                  onValueChange={(v) => v && setSpeedUnit(v as SpeedUnit)}
-                  className="h-6"
+                  onValueChange={(v) => setSpeedUnit(v as SpeedUnit)}
+                  className="data-[size=sm]:h-6"
                   aria-label={t('charts.speedUnit')}
                 >
-                  <ToggleGroupItem value="kmh" className="h-6 px-2 text-xs">
-                    km/h
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="pace" className="h-6 px-2 text-xs">
-                    min/km
-                  </ToggleGroupItem>
-                </ToggleGroup>
+                  <SegmentedItem value="kmh">km/h</SegmentedItem>
+                  <SegmentedItem value="pace">min/km</SegmentedItem>
+                </Segmented>
               )}
             </div>
             <ChartValue series={s} />

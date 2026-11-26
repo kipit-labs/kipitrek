@@ -2,7 +2,7 @@ import { Trophy } from 'lucide-react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@kipit-labs/kipitidy/tooltip'
 import { doneHikes } from '@/features/hikes/api'
 import { personalRecords } from '@/features/stats/records'
 import { useHikes } from '@/features/hikes/useHikes'

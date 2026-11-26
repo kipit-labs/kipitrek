@@ -2,13 +2,13 @@ import { EllipsisVertical, UserCheck, UserMinus, UserPlus, UserX } from 'lucide-
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@kipit-labs/kipitidy/dropdown-menu'
 import { errorMessage } from '@/lib/errors'
 
 import type { Relation } from './api'

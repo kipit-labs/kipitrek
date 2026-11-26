@@ -14,10 +14,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+} from '@kipit-labs/kipitidy/alert-dialog'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { MapMarker, MapRoute, MarkerContent, useMap } from '@/components/ui/map'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarTrigger } from '@kipit-labs/kipitidy/sidebar'
 import { useProfile } from '@/features/hike-detail/api'
 import { boundsBetween } from '@/features/hike-detail/profile'
 import { FitBounds } from '@/features/hikes/FitBounds'

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@kipit-labs/kipitidy/button'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@kipit-labs/kipitidy/card'
+import { Skeleton } from '@kipit-labs/kipitidy/skeleton'
 import { errorMessage } from '@/lib/errors'
 
 import { SessionList } from './SessionList'

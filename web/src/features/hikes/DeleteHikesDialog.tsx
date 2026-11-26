@@ -10,7 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@kipit-labs/kipitidy/alert-dialog'
 import { errorMessage } from '@/lib/errors'
 
 import type { Hike } from './api'

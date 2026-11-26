@@ -5,9 +5,9 @@ import { useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Skeleton } from '@/components/ui/skeleton'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@kipit-labs/kipitidy/select'
+import { Skeleton } from '@kipit-labs/kipitidy/skeleton'
+import { Segmented, SegmentedItem } from '@kipit-labs/kipitidy'
 import { useMe } from '@/features/auth/useAuth'
 import { doneHikes } from '@/features/hikes/api'
 import { FilterBar } from '@/features/hikes/FilterBar'
@@ -133,20 +133,18 @@ export function StatsPage() {
               <section className="bg-card space-y-3 rounded-xl border p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h2 className="text-sm font-medium">{year === null ? t('stats.byYear') : t('stats.byMonth', { year })}</h2>
-                  <ToggleGroup
-                    type="single"
+                  <Segmented
                     size="sm"
-                    variant="outline"
                     value={metric}
-                    onValueChange={(v) => v && setMetric(v as Metric)}
+                    onValueChange={(v) => setMetric(v as Metric)}
                     aria-label={t('stats.metric')}
                   >
                     {metrics.map((m) => (
-                      <ToggleGroupItem key={m.value} value={m.value}>
+                      <SegmentedItem key={m.value} value={m.value}>
                         {t(`stats.metrics.${m.value}`)}
-                      </ToggleGroupItem>
+                      </SegmentedItem>
                     ))}
-                  </ToggleGroup>
+                  </Segmented>
                 </div>
                 <PeriodChart bars={bars} metric={metric} />
                 <PeriodTable bars={bars} />

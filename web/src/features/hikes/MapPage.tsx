@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarTrigger } from '@kipit-labs/kipitidy/sidebar'
 import { useMe } from '@/features/auth/useAuth'
 
 import { FilterBar } from './FilterBar'

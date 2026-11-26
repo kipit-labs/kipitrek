@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@kipit-labs/kipitidy/dialog"
 import {
   InputGroup,
   InputGroupAddon,

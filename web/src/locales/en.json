@@ -677,9 +677,6 @@
     "weather": "Weather"
   },
   "ui": {
-    "sidebar": "Sidebar",
-    "sidebarDescription": "Displays the mobile sidebar.",
-    "toggleSidebar": "Toggle Sidebar",
     "closePopup": "Close popup",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
@@ -687,9 +684,7 @@
     "fullscreen": "Toggle fullscreen",
     "resetBearing": "Reset bearing to north",
     "commandTitle": "Command Palette",
-    "commandDescription": "Search for a command to run...",
-    "breadcrumb": "Breadcrumb",
-    "more": "More"
+    "commandDescription": "Search for a command to run..."
   },
   "light": {
     "night": "Night",

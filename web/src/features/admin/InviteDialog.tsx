@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import {
   Dialog,
   DialogContent,
@@ -10,8 +10,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { FloatingInput } from '@/components/ui/floating-input'
+} from '@kipit-labs/kipitidy/dialog'
+import { FloatingInput } from '@kipit-labs/kipitidy/floating-input'
 import { displayName } from '@/features/account/displayName'
 import { MAX_NAME_LENGTH } from '@/features/account/api'
 import { useConfig } from '@/features/auth/useAuth'

@@ -1,7 +1,7 @@
 import { MountainSnow } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-import { Card } from '@/components/ui/card'
+import { Card } from '@kipit-labs/kipitidy/card'
 import { LanguageSwitcher } from '@/features/account/LanguageSwitcher'
 
 /** Centered, branded card used by the sign-in and email verification pages. */
@@ -15,7 +15,9 @@ export function AuthShell({ children }: { children: ReactNode }) {
           kipitrek
         </a>
         <Card>{children}</Card>
-        <LanguageSwitcher className="mx-auto" />
+        <div className="flex justify-center">
+          <LanguageSwitcher />
+        </div>
       </div>
     </div>
   )

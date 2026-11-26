@@ -3,7 +3,7 @@ import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { FloatingTextarea } from '@/components/ui/floating-textarea'
+} from '@kipit-labs/kipitidy/dialog'
+import { FloatingTextarea } from '@kipit-labs/kipitidy/floating-textarea'
 import { displayName } from '@/features/account/displayName'
 import { ApiError } from '@/lib/api'
 import { errorMessage } from '@/lib/errors'

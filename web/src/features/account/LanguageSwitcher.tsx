@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Segmented, SegmentedItem, Tip } from '@kipit-labs/kipitidy'
 import { isLanguage } from '@/i18n'
 import { languageOptions } from '@/i18n/languages'
 
@@ -13,27 +12,20 @@ export function LanguageSwitcher({ className }: { className?: string }) {
   const setLanguage = useSetLanguage()
 
   return (
-    <ToggleGroup
-      type="single"
+    <Segmented
       size="sm"
-      variant="outline"
-      spacing={0}
       value={i18n.language}
       onValueChange={(v) => isLanguage(v) && setLanguage(v)}
       aria-label={t('settings.language')}
       className={className}
     >
       {languageOptions.map(({ value, label, flag: Flag }) => (
-        <Tooltip key={value}>
-          <TooltipTrigger asChild>
-            {/* The tooltip trigger overwrites data-state, so selection is styled from aria-checked. */}
-            <ToggleGroupItem value={value} aria-label={label} lang={value} className="aria-checked:bg-muted">
-              <Flag className="h-3 w-4.5 rounded-[2px] shadow-[0_0_0_0.5px_rgb(0_0_0/0.2)]" />
-            </ToggleGroupItem>
-          </TooltipTrigger>
-          <TooltipContent lang={value}>{label}</TooltipContent>
-        </Tooltip>
+        <Tip key={value} content={<span lang={value}>{label}</span>}>
+          <SegmentedItem value={value} aria-label={label} lang={value}>
+            <Flag className="h-3 w-4.5 rounded-[2px] shadow-[0_0_0_0.5px_rgb(0_0_0/0.2)]" />
+          </SegmentedItem>
+        </Tip>
       ))}
-    </ToggleGroup>
+    </Segmented>
   )
 }

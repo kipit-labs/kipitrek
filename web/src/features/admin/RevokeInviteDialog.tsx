@@ -9,8 +9,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+} from '@kipit-labs/kipitidy/alert-dialog'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { errorMessage } from '@/lib/errors'
 
 import type { AdminUser } from './api'

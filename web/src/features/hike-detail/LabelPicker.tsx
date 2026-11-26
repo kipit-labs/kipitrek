@@ -2,7 +2,7 @@ import { Check, Plus, Tag, X } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@kipit-labs/kipitidy/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { MAX_LABEL_LENGTH, MAX_LABELS } from '@/features/hikes/api'
