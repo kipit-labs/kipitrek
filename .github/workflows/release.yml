@@ -1,6 +1,7 @@
 # Merging a change of VERSION (a release PR) into main tags that commit 1.2.3
 # and publishes ghcr.io/kipit-labs/kipitrek:1.2.3 and :latest for amd64 and
-# arm64, with the GitHub release. Deploying it is a compose.yaml bump.
+# arm64, with the GitHub release. Deploying it is an image bump in the
+# homelab ops repo.
 name: release
 
 on:

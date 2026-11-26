@@ -1,7 +1,7 @@
 # kipitrek
 
 All your hikes on one map. Go API + embedded React app, PostgreSQL + PostGIS. Part of kipit-labs; prod runs on
-kipitiny. `README.md` has the architecture, data model, API and configuration: keep it current with every change.
+the homelab k3s cluster (ArgoCD). `README.md` has the architecture, data model, API and configuration: keep it current with every change.
 
 ## Rules
 - Clean architecture, dependencies point inward: `domain` (entities, ports, errors) has no framework imports;
@@ -22,6 +22,5 @@ kipitiny. `README.md` has the architecture, data model, API and configuration: k
 `go:embed` needs `web/dist` (`web/dist/.gitkeep` is committed). Skills: `feature`, `fix`, `release`.
 
 ## Workflow
-Conventional commits, one PR per step; multi-step work is a stack (`gh stack`), whose top PR gets a kipitiny preview
-at `gpx-pr-<bottom PR>.mathieuhoyer.fr` seeded from prod's latest backup, email off. Releases are a
-`chore(release): X.Y.Z` PR bumping `VERSION` (see the `release` skill); deploys bump the image in `compose.yaml`.
+Conventional commits, one PR per step; multi-step work is a stack (`gh stack`). Releases are a `chore(release): X.Y.Z`
+PR bumping `VERSION`; deploys bump the image in the homelab ops repo (see the `release` skill).

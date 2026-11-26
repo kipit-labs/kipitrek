@@ -1,6 +1,6 @@
 ---
 name: release
-description: Cut a kipitrek release and deploy it — bump `VERSION` in a `chore(release): X.Y.Z` PR and merge it (the release workflow tags and publishes the image), then bump the image in compose.yaml (kipitiny git sync deploys it). Use when the user says "release", "cut a release", "deploy", or invokes /release [version|major|minor|patch].
+description: Cut a kipitrek release and deploy it — bump `VERSION` in a `chore(release): X.Y.Z` PR and merge it (the release workflow tags and publishes the image), then bump the image in the homelab ops repo (ArgoCD deploys it). Use when the user says "release", "cut a release", "deploy", or invokes /release [version|major|minor|patch].
 argument-hint: "[patch|minor|major|X.Y.Z]"
 disable-model-invocation: true
 ---
@@ -42,17 +42,17 @@ tag. Tags are bare semver, no `v` prefix. Prod only changes in step 6.
    --exit-status`; on failure stop and show `gh run view <id> --log-failed`). Check the image is pullable:
    `docker manifest inspect ghcr.io/kipit-labs/kipitrek:X.Y.Z`.
 
-6. **Deploy.** Prod is the kipitiny project `gpx-viewer` (`manager.mathieuhoyer.fr`), synced from `compose.yaml`
-   on `main`. Pin the tag only now that the image exists, so a sync never asks for a missing image:
+6. **Deploy.** Prod runs on the homelab k3s cluster: ArgoCD auto-syncs `main` of `~/work/homelab/ops` (origin
+   `git.mathieuhoyer.fr/homelab/ops`), so the push is the deploy. Pin the tag only now that the image exists:
    ```sh
-   git switch -c chore/deploy-X.Y.Z
-   # compose.yaml: image: ghcr.io/kipit-labs/kipitrek:X.Y.Z (exact version, never latest); nothing else changes
-   git commit -am "chore(deploy): run X.Y.Z on kipitiny"
-   git push -u origin chore/deploy-X.Y.Z
-   gh pr create --title "chore(deploy): run X.Y.Z on kipitiny" --body "Deploy X.Y.Z."
-   gh pr merge --rebase --auto
+   cd ~/work/homelab/ops
+   git status --porcelain            # must be empty, else stop
+   git checkout main && git pull --ff-only
+   docker buildx imagetools inspect ghcr.io/kipit-labs/kipitrek:X.Y.Z --format '{{.Manifest.Digest}}'
    ```
-   kipitiny polls the branch every 5 minutes; the kipitiny MCP `sync_project_git` (project `gpx-viewer`) deploys at
-   once, then check `get_app_status` for `gpx-viewer/app`.
+   In `clusters/homelab/infrastructure/gpx-viewer/deployment.yaml`, set the image to
+   `ghcr.io/kipit-labs/kipitrek:X.Y.Z@<digest>` (exact version and digest, never `latest`); `git diff` shows only that
+   line. Then `git commit -am "chore(gpx-viewer): bump image to X.Y.Z" && git push origin main`. Check the rollout
+   from `ssh mat@morpheus`: `sudo -n kubectl -n gpx-viewer rollout status deploy/gpx-viewer`.
 
-7. **Report**: version, GitHub release URL, image tag, deploy commit and the kipitiny deployment status.
+7. **Report**: version, GitHub release URL, image tag, ops commit and the rollout status.

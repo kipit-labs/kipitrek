@@ -29,8 +29,6 @@ and `make lint` green before phase 3.
   (playwright-core with the cached Chromium), at phone width (390×844) too. Emails land in Mailpit (:8025).
 - Use a test account (`claude-test@test.local`, verified through psql); never sessions of real users.
 - Another project's database may hold :5432: set `DB_PORT` in `.env` rather than stopping it.
-- The stack's preview (`gpx-pr-<bottom PR>.mathieuhoyer.fr`) runs on a copy of prod's data: check it there for
-  anything data-shaped. The kipitiny MCP server is production: never test with it.
 
 For each case record what you did, expected and actual. Failures are fixed and retested, not just reported.
 

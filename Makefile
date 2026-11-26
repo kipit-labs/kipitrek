@@ -1,13 +1,10 @@
 include $(wildcard .env)
 export
 
-# compose.yaml is production's (kipitiny); local runs use docker-compose.yml.
-COMPOSE := docker compose -f docker-compose.yml
-
 .PHONY: dev-db dev-api dev-web web build test test-integration lint up down import-peaks
 
 dev-db: ## Start PostGIS and Mailpit (inbox at http://localhost:8025)
-	$(COMPOSE) up -d db mailpit
+	docker compose up -d db mailpit
 
 dev-api: ## Run the API locally (serves the last frontend build)
 	go run ./cmd/kipitrek
@@ -35,10 +32,10 @@ lint:
 	cd web && pnpm lint
 
 up: ## Build and run app + db
-	$(COMPOSE) up --build -d
+	docker compose up --build -d
 
 down:
-	$(COMPOSE) down
+	docker compose down
 
 import-peaks: ## Load OSM peaks in a region: make import-peaks BBOX=minLon,minLat,maxLon,maxLat
 	go run ./cmd/kipitrek import-peaks -bbox $(BBOX)
