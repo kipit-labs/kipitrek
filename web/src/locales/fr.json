@@ -701,9 +701,7 @@
     "zoomOut": "Zoom arrière",
     "locate": "Me localiser",
     "fullscreen": "Plein écran",
-    "resetBearing": "Réorienter vers le nord",
-    "commandTitle": "Palette de commandes",
-    "commandDescription": "Rechercher une commande…"
+    "resetBearing": "Réorienter vers le nord"
   },
   "light": {
     "night": "Nuit",
