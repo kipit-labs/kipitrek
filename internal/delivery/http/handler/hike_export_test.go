@@ -18,10 +18,6 @@ import (
 	"github.com/kipit-labs/kipitrek/internal/domain"
 )
 
-type fakeAuth struct{ user *domain.User }
-
-func (a fakeAuth) Authenticate(context.Context, string) (*domain.User, error) { return a.user, nil }
-
 type exportService struct {
 	HikeService
 	hikes []domain.Hike

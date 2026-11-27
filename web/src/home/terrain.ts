@@ -206,3 +206,13 @@ export const others: Pt[][] = [
 export function toPath(pts: Pt[], width: number, height: number): string {
   return `M${pts.map((p) => `${f(p[0] * width)} ${f(p[1] * height)}`).join('L')}`
 }
+
+// The featured hike, as the landing page shows it.
+export const samples = sampleTrack(featured)
+export const totalKm = samples[samples.length - 1].km
+export const summit = samples.reduce((a, b) => (b.ele > a.ele ? b : a))
+export const summitPt = featured[samples.indexOf(summit)]
+export const movingHours = samples.reduce(
+  (t, s, k) => (k === 0 ? 0 : t + (s.km - samples[k - 1].km) / s.speed),
+  0,
+)

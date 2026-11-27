@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -63,3 +64,7 @@ func sessionCookie(rec *httptest.ResponseRecorder) *http.Cookie {
 	}
 	return nil
 }
+
+type fakeAuth struct{ user *domain.User }
+
+func (a fakeAuth) Authenticate(context.Context, string) (*domain.User, error) { return a.user, nil }

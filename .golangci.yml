@@ -49,7 +49,11 @@ linters:
             - pkg: gorm.io
               desc: handlers never touch GORM
     revive:
+      enable-default-rules: true
       rules:
+        # Small files: easier to review, and to read whole (people and LLMs).
+        - name: file-length-limit
+          arguments: [{ max: 500 }]
         - name: exported
           disabled: true
         - name: package-comments
