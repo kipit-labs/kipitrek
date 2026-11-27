@@ -68,7 +68,11 @@ export function useDeleteHikes() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: deleteHikes,
-    onSuccess: () => qc.invalidateQueries({ queryKey: keys.all }),
+    // Not awaited: refetching the deleted hike's page answers 404 and unmounts the dialog before the callbacks given
+    // to mutate (toast, leaving the page) could run.
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: keys.all })
+    },
   })
 }
 
