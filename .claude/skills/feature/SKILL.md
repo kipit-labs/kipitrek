@@ -20,8 +20,8 @@ Four phases, in order. Never skip the questions or the real-usage tests.
 ## 2. Implement
 
 Follow CLAUDE.md. Tests for new logic (Go next to the code, `*_integration_test.go` for SQL; vitest in `web/`),
-both locales, README (API table, data, configuration) when behavior changes. `make test`, `make test-integration`
-and `make lint` green before phase 3.
+both locales, README (API table, data, configuration) when behavior changes. New routes go into `routeAccess`.
+`make cover` and `make lint` green before phase 3.
 
 ## 3. Test in real usage
 
@@ -39,7 +39,7 @@ In the PR description (the last PR of a stack), under `## Testing`:
 ```markdown
 ## Testing
 
-`make test` / `make test-integration` / `make lint`: green.
+`make cover` / `make lint`: green (coverage X%).
 
 | # | Case | How | Expected | Result |
 |---|------|-----|----------|--------|
