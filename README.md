@@ -82,7 +82,9 @@ make lint               # golangci-lint (gofmt, vet, layer rules), oxlint
 `.golangci.yml` enforces the layers (depguard): `domain` and `usecase` import no framework, handlers never reach an
 adapter or GORM, adapters never call use cases. `internal/delivery/http/routes_test.go` lists who may call each API
 route (public, signed in, admin); a new route fails it until declared, and every protected route is checked to refuse
-signed-out users (and non-admins). Files stay under 500 lines (revive `file-length-limit`, oxlint `max-lines`), except
+signed-out users (and non-admins). `cmd/kipitrek/api_integration_test.go` drives the real application over HTTP
+on PostGIS (only email faked) through the main journeys: sign-up to account deletion, hikes, visibility and friends.
+Files stay under 500 lines (revive `file-length-limit`, oxlint `max-lines`), except
 the vendored `web/src/components/ui/`.
 
 Releases: a `chore(release): X.Y.Z` PR bumping `VERSION`; merging it tags, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` and creates the GitHub release (`.github/workflows/release.yml`). Production runs on the homelab's k3s cluster, which pins the image in its own manifests.

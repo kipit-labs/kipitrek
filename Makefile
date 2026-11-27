@@ -5,7 +5,7 @@ export
 DATABASE_URL ?= postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable
 GOLANGCI_LINT_VERSION := v2.15.0
 # Ratchet: raise it when coverage goes up, never lower it.
-COVERAGE_FLOOR := 75
+COVERAGE_FLOOR := 79
 
 .PHONY: dev-db dev-api dev-web web build test test-integration cover lint up down import-peaks
 
