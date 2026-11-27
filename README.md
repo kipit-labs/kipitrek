@@ -6,6 +6,33 @@
   <b>Import your GPX files and see all your hikes on one map.</b>
 </p>
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/map-dark.png">
+  <img alt="The map: every hike's track in its own colour, with the list of hikes in the corner" src="docs/screenshots/map-light.png">
+</picture>
+
+<table>
+  <tr>
+    <td width="33%"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hike-dark.png">
+  <img alt="A hike: distance, elevation, duration, sunrise, speed, labels, notes, its track and the elevation and speed profiles" src="docs/screenshots/hike-light.png">
+</picture></td>
+    <td width="33%"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/hikes-dark.png">
+  <img alt="The hikes table, sortable by date, distance, elevation gain and duration, with labels" src="docs/screenshots/hikes-light.png">
+</picture></td>
+    <td width="33%"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/stats-dark.png">
+  <img alt="Stats: totals, active days, streak, explored tiles, summits and distance by year" src="docs/screenshots/stats-light.png">
+</picture></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Each hike: stats, profile, friends, kudos and comments</sub></td>
+    <td align="center"><sub>Every hike, sortable and filterable</sub></td>
+    <td align="center"><sub>Totals, explored tiles, summits and records</sub></td>
+  </tr>
+</table>
+
 - **Backend**: Go, chi, GORM (AutoMigrate), PostgreSQL + PostGIS
 - **Frontend**: React, Vite, TypeScript, shadcn/ui, [mapcn](https://mapcn.dev) (MapLibre)
 - The Go binary embeds the built frontend and serves it alongside the API.
