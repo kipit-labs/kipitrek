@@ -26,3 +26,7 @@ dist-ssr
 
 # Copied from node_modules by copy-maplibre-worker
 public/maplibre-gl-*.mjs
+
+# Playwright output
+test-results/
+playwright-report/

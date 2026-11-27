@@ -26,17 +26,22 @@ the homelab k3s cluster (ArgoCD). `README.md` has the architecture, data model, 
 - Outbound calls are optional: each external service has an env var that turns it off when empty.
 
 ## Testing
-The tests are the safety net that lets agents change code: a change is done when `make cover` and `make lint` pass,
-run, not assumed. Four layers, each one required for what it covers:
+The tests are the safety net that lets agents change code: a change is done when `make cover`, `make e2e` and
+`make lint` pass, run, not assumed. Five layers, each one required for what it covers:
 
 | Layer | Where | Covers |
 |---|---|---|
 | Unit | `usecase/*/*_test.go`, fakes in `fakes_test.go` | business rules, edge cases |
 | Adapter integration | `postgres/*_integration_test.go` (PostGIS), `httptest` servers for HTTP APIs | SQL, PostGIS, outside APIs |
 | HTTP contract | `delivery/http/handler/*_test.go` (`call`), `routes_test.go` (`routeAccess`) | status codes, error codes, cookies, who may call each route |
-| End to end | `cmd/kipitrek/api_integration_test.go`: the real `wire()` over HTTP on PostGIS, only email faked | user journeys across every layer |
+| API end to end | `cmd/kipitrek/api_integration_test.go`: the real `wire()` over HTTP on PostGIS, only email faked | user journeys across every layer |
+| UI end to end | `web/e2e/*.e2e.ts` (Playwright): the real binary on PostGIS, WebKit at iPhone size and desktop Chromium, map services answered locally | user journeys in a browser, phone layout, uncaught page errors |
 
-- A new route goes into `routeAccess`; a new user-facing flow adds or extends a journey in the end-to-end tests.
+- A new route goes into `routeAccess`; a new user-facing flow adds or extends a journey in both end-to-end suites
+  (API, and UI for what users click).
+- UI tests find elements by role and label, as users and screen readers do, never by CSS class or test id: an element
+  a test cannot find by name is an accessibility bug. They wait on state or responses, never on timeouts. Any
+  uncaught page error fails the test (`e2e/fixtures.ts`). Each test signs up its own account, which is deleted after.
 - Write the test first and watch it fail for the right reason: a test that never failed proves nothing. For a bug,
   the failing test is the reproduction.
 - Never weaken, skip or delete a test, add `//nolint`, or lower `COVERAGE_FLOOR` to get green. If a test is wrong,
@@ -46,11 +51,14 @@ run, not assumed. Four layers, each one required for what it covers:
 - Tests are deterministic: no sleeps, no real network (outside services via `httptest` or fakes), and they clean up
   what they write in the shared dev database.
 - `COVERAGE_FLOOR` only goes up: raise it when coverage does.
-- The web has vitest for logic only; UI changes are checked in a real browser (the `feature` skill's phase 3).
+- Frontend logic (formatting, filters, geometry) gets vitest tests next to it.
+- A new test runs repeated before it is trusted: `make e2e ARGS="--repeat-each 5"`. A flaky test is a bug, never
+  retried away (`retries: 0`).
 
 ## Commands
-`make dev-db` / `make dev-api` / `make dev-web` / `make test` / `make test-integration` / `make cover` / `make lint` /
-`make build`. `make cover` (unit + integration + floor) is what CI runs.
+`make dev-db` / `make dev-api` / `make dev-web` / `make test` / `make test-integration` / `make cover` / `make e2e` /
+`make lint` / `make build`. CI runs `make cover` (unit + integration + floor) and `make e2e` (Playwright in its Docker
+image, no browser to install; `ARGS=` passes options, e.g. `ARGS="--project=iphone hikes"`).
 `go:embed` needs `web/dist` (`web/dist/.gitkeep` is committed). Skills: `feature`, `fix`, `release`.
 
 ## Workflow

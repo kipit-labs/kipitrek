@@ -18,7 +18,7 @@ tag. Tags are bare semver, no `v` prefix. Prod only changes in step 6.
    - on `main`, working tree clean (`git status --porcelain` empty)
    - `git fetch --tags origin`, then local `main` == `origin/main`
    - there are commits since the last tag (`git describe --tags --abbrev=0`)
-   - `make cover` and `make lint` green
+   - `make cover`, `make e2e` and `make lint` green
 
 2. **Pick the version.** `$ARGUMENTS` may be `X.Y.Z` or `major|minor|patch`. Without one, infer from the
    conventional commits since the last tag (`git log <last>..HEAD --format=%s`): any `!:` or `BREAKING CHANGE` →
