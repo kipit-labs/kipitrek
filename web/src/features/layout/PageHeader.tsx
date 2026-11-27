@@ -55,7 +55,14 @@ export function PageHeader({ crumbs, actions, children, className }: Props) {
                 <Fragment key={i}>
                   <BreadcrumbItem className={cn(last ? 'min-w-0' : 'max-sm:hidden')}>
                     {last ? (
-                      <BreadcrumbPage className="truncate">{crumb.label}</BreadcrumbPage>
+                      // A crumb holding controls (the hike's rename button) must not be a disabled link: assistive
+                      // tech would announce its buttons as disabled too.
+                      <BreadcrumbPage
+                        className="truncate"
+                        {...(typeof crumb.label !== 'string' && { role: undefined, 'aria-disabled': undefined })}
+                      >
+                        {crumb.label}
+                      </BreadcrumbPage>
                     ) : crumb.to ? (
                       <BreadcrumbLink asChild>
                         <Link to={crumb.to}>{crumb.label}</Link>
