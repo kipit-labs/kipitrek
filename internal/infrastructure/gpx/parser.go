@@ -22,7 +22,7 @@ func NewParser() *Parser { return &Parser{} }
 func load(data []byte) (*gpx.GPX, [][]gpx.GPXPoint, error) {
 	g, err := gpx.ParseBytes(data)
 	if err != nil {
-		return nil, nil, fmt.Errorf("%w: %v", domain.ErrInvalidGPX, err)
+		return nil, nil, fmt.Errorf("%w: %v", domain.ErrInvalidGPX, err) //nolint:errorlint // keep gpxgo errors inside the adapter
 	}
 
 	for _, r := range g.Routes {
@@ -124,7 +124,7 @@ func (p *Parser) Samples(data []byte) ([]domain.Sample, error) {
 func (p *Parser) Route(data []byte) ([]byte, error) {
 	g, err := gpx.ParseBytes(data)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %v", domain.ErrInvalidGPX, err)
+		return nil, fmt.Errorf("%w: %v", domain.ErrInvalidGPX, err) //nolint:errorlint // keep gpxgo errors inside the adapter
 	}
 	strip := func(pts []gpx.GPXPoint) {
 		for i := range pts {

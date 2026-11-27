@@ -37,18 +37,10 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Check formatting
-        run: |
-          unformatted=$(gofmt -l cmd internal web)
-          if [ -n "$unformatted" ]; then
-            echo "::error::gofmt needed on: $unformatted"
-            exit 1
-          fi
-
-      - name: Vet
-        run: |
-          go vet ./...
-          go vet -tags integration ./...
+      # gofmt, vet and the clean-architecture layer rules (.golangci.yml).
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.15.0
 
       - name: Unit tests
         run: go test -race ./...

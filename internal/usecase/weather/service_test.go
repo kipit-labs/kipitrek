@@ -73,11 +73,10 @@ func (fakeParser) Samples(raw []byte) ([]domain.Sample, error) {
 	if string(raw) == "bad" {
 		return nil, errors.New("bad gpx")
 	}
-	at, err := time.Parse(time.RFC3339, string(raw))
-	if err != nil {
-		return []domain.Sample{{Lat: 1}}, nil
+	if at, err := time.Parse(time.RFC3339, string(raw)); err == nil {
+		return []domain.Sample{sample(1, at), sample(2, at.Add(time.Hour))}, nil
 	}
-	return []domain.Sample{sample(1, at), sample(2, at.Add(time.Hour))}, nil
+	return []domain.Sample{{Lat: 1}}, nil
 }
 
 type fakeProvider struct{ err error }

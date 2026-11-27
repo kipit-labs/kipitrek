@@ -49,14 +49,14 @@ func spaHandler(static fs.FS) http.Handler {
 				http.NotFound(w, r)
 				return
 			}
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		if strings.HasPrefix(name, "assets/") {
 			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 		}
 		if name == "index.html" {
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		files.ServeHTTP(w, r)
@@ -86,7 +86,7 @@ func rootHandler(static fs.FS, appURL string) http.Handler {
 			home = homes[domain.LanguageEnglish]
 		}
 		if home == nil || middleware.UserFrom(r.Context()) != nil {
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -132,7 +132,7 @@ func sitemapHandler(appURL string) http.HandlerFunc {
 	}
 }
 
-func serveIndex(w http.ResponseWriter, r *http.Request, static fs.FS) {
+func serveIndex(w http.ResponseWriter, static fs.FS) {
 	b, err := fs.ReadFile(static, "index.html")
 	if err != nil {
 		http.Error(w, "frontend not built: run `make web`", http.StatusNotFound)
@@ -156,17 +156,17 @@ func hikePageHandler(static fs.FS, appURL string, hikes HikeMeta) http.HandlerFu
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := uuid.Parse(chi.URLParam(r, "id"))
 		if err != nil {
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		h, err := hikes.Get(r.Context(), uuid.Nil, id)
 		if err != nil {
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		page, err := fs.ReadFile(static, "index.html")
 		if err != nil {
-			serveIndex(w, r, static)
+			serveIndex(w, static)
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")

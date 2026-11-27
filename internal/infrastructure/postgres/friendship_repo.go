@@ -79,7 +79,7 @@ func (r *FriendshipRepository) ListConnections(ctx context.Context, userID uuid.
 	out := make([]domain.Connection, len(rows))
 	for i, row := range rows {
 		f := domain.Friendship{RequesterID: row.RequesterID, Accepted: row.AcceptedAt != nil}
-		out[i] = domain.Connection{User: *row.UserModel.toDomain(), Relation: f.RelationFor(userID), Since: row.Since}
+		out[i] = domain.Connection{User: *row.toDomain(), Relation: f.RelationFor(userID), Since: row.Since}
 	}
 	return out, nil
 }

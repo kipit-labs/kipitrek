@@ -144,7 +144,7 @@ func (r *HikeRepository) loadParticipants(ctx context.Context, hikes []domain.Hi
 	}
 	for _, row := range rows {
 		h := byID[row.HikeID]
-		h.Participants = append(h.Participants, *row.UserModel.toDomain())
+		h.Participants = append(h.Participants, *row.toDomain())
 	}
 	return nil
 }

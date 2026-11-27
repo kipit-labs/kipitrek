@@ -1,6 +1,8 @@
 include $(wildcard .env)
 export
 
+GOLANGCI_LINT_VERSION := v2.15.0
+
 .PHONY: dev-db dev-api dev-web web build test test-integration lint up down import-peaks
 
 dev-db: ## Start PostGIS and Mailpit (inbox at http://localhost:8025)
@@ -25,10 +27,8 @@ test:
 test-integration: ## Needs `make dev-db`
 	TEST_DATABASE_URL=$(DATABASE_URL) go test -tags integration ./internal/infrastructure/postgres/
 
-lint:
-	@unformatted=$$(gofmt -l cmd internal web); if [ -n "$$unformatted" ]; then echo "Run gofmt on:"; echo "$$unformatted"; exit 1; fi
-	go vet ./...
-	go vet -tags integration ./...
+lint: ## gofmt, vet, layer rules (.golangci.yml), oxlint
+	go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION) run
 	cd web && pnpm lint
 
 up: ## Build and run app + db

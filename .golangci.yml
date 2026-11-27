@@ -1,0 +1,66 @@
+version: "2"
+
+run:
+  build-tags: [integration]
+
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - depguard
+    - errorlint
+    - gocritic
+    - misspell
+    - nilerr
+    - noctx
+    - revive
+    - sqlclosecheck
+    - unconvert
+    - unparam
+  settings:
+    # Clean architecture: dependencies point inward. Each rule lists what a
+    # layer may import; anything else fails the lint.
+    depguard:
+      rules:
+        domain:
+          list-mode: strict
+          files: ["**/internal/domain/**"]
+          allow: [$gostd, github.com/google/uuid]
+        usecase:
+          list-mode: strict
+          files: ["**/internal/usecase/**"]
+          allow:
+            - $gostd
+            - github.com/google/uuid
+            - github.com/kipit-labs/kipitrek/internal/domain
+            - github.com/kipit-labs/kipitrek/internal/usecase
+        infrastructure:
+          files: ["**/internal/infrastructure/**"]
+          deny:
+            - pkg: github.com/kipit-labs/kipitrek/internal/usecase
+              desc: adapters implement domain ports, they never call use cases
+            - pkg: github.com/kipit-labs/kipitrek/internal/delivery
+              desc: adapters know nothing about HTTP
+        delivery:
+          files: ["**/internal/delivery/**"]
+          deny:
+            - pkg: github.com/kipit-labs/kipitrek/internal/infrastructure
+              desc: handlers go through use cases, wiring is in cmd/kipitrek
+            - pkg: gorm.io
+              desc: handlers never touch GORM
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+  exclusions:
+    # std-error-handling: unchecked Close/Flush/print, which only read paths use here.
+    presets: [std-error-handling, common-false-positives]
+    rules:
+      - path: _test\.go
+        linters: [noctx, unparam]
+
+formatters:
+  enable:
+    - gofmt
