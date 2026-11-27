@@ -30,6 +30,7 @@ import (
 	"github.com/kipit-labs/kipitrek/internal/usecase/summit"
 	"github.com/kipit-labs/kipitrek/internal/usecase/weather"
 	"github.com/kipit-labs/kipitrek/web"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -72,57 +73,21 @@ func run() error {
 		slog.Info("SMTP not configured: emails are not verified and no email is sent")
 	}
 
-	users := postgres.NewUserRepository(db)
-	sessions := postgres.NewSessionRepository(db)
-	authSvc, err := auth.NewService(
-		users,
-		sessions,
-		postgres.NewEmailVerificationRepository(db),
-		postgres.NewPasswordResetRepository(db),
-		security.NewBcryptHasher(0),
-		mailer,
-		cfg.SessionTTL,
-		cfg.AppURL,
-		cfg.RegistrationEnabled,
-	)
+	a, err := wire(cfg, db, mailer)
 	if err != nil {
 		return err
 	}
-	adminSvc := admin.NewService(users, sessions, authSvc)
-	accountSvc := account.NewService(users)
-	socialSvc := social.NewService(users, postgres.NewFriendshipRepository(db))
-	hikeSvc := hike.NewService(postgres.NewHikeRepository(db), gpx.NewParser(), socialSvc)
-	interactionSvc := interaction.NewService(postgres.NewInteractionRepository(db), hikeSvc)
-	summitSvc := summit.NewService(postgres.NewPeakRepository(db), overpass.NewClient(overpass.DefaultURL), hikeSvc)
-
-	go purgeExpired(ctx, authSvc)
-	go refreshDerived(ctx, hikeSvc)
-	if cfg.WeatherURL != "" {
-		weatherSvc := weather.NewService(postgres.NewWeatherRepository(db), gpx.NewParser(), openmeteo.NewClient(cfg.WeatherURL))
-		go fetchWeather(ctx, weatherSvc)
+	go purgeExpired(ctx, a.auth)
+	go refreshDerived(ctx, a.hikes)
+	if a.weather != nil {
+		go fetchWeather(ctx, a.weather)
 	} else {
 		slog.Info("WEATHER_URL is empty: hikes get no weather")
 	}
 
-	router := httpdelivery.NewRouter(httpdelivery.Deps{
-		Auth:           handler.NewAuthHandler(authSvc, cfg.CookieSecure),
-		Account:        handler.NewAccountHandler(accountSvc),
-		Hikes:          handler.NewHikeHandler(hikeSvc, interactionSvc, ogimage.Render, cfg.MaxUploadMB<<20),
-		Social:         handler.NewSocialHandler(socialSvc),
-		Summits:        handler.NewSummitHandler(summitSvc),
-		Interactions:   handler.NewInteractionHandler(interactionSvc),
-		Admin:          handler.NewAdminHandler(adminSvc, authSvc),
-		Authenticator:  authSvc,
-		Static:         web.Dist(),
-		AppURL:         cfg.AppURL,
-		HikeMeta:       hikeSvc,
-		RealIPHeader:   cfg.RealIPHeader,
-		TrustedProxies: cfg.TrustedProxies,
-	})
-
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           router,
+		Handler:           a.router,
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
@@ -144,6 +109,63 @@ func run() error {
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	return srv.Shutdown(shutdownCtx)
+}
+
+// app is the wired application: the HTTP API and the services background
+// jobs run on.
+type app struct {
+	router  http.Handler
+	auth    *auth.Service
+	hikes   *hike.Service
+	weather *weather.Service // nil when WEATHER_URL is empty
+}
+
+// wire builds the application on db. mailer may be nil (no SMTP).
+func wire(cfg *config.Config, db *gorm.DB, mailer domain.Mailer) (*app, error) {
+	users := postgres.NewUserRepository(db)
+	sessions := postgres.NewSessionRepository(db)
+	authSvc, err := auth.NewService(
+		users,
+		sessions,
+		postgres.NewEmailVerificationRepository(db),
+		postgres.NewPasswordResetRepository(db),
+		security.NewBcryptHasher(0),
+		mailer,
+		cfg.SessionTTL,
+		cfg.AppURL,
+		cfg.RegistrationEnabled,
+	)
+	if err != nil {
+		return nil, err
+	}
+	adminSvc := admin.NewService(users, sessions, authSvc)
+	accountSvc := account.NewService(users)
+	socialSvc := social.NewService(users, postgres.NewFriendshipRepository(db))
+	hikeSvc := hike.NewService(postgres.NewHikeRepository(db), gpx.NewParser(), socialSvc)
+	interactionSvc := interaction.NewService(postgres.NewInteractionRepository(db), hikeSvc)
+	summitSvc := summit.NewService(postgres.NewPeakRepository(db), overpass.NewClient(overpass.DefaultURL), hikeSvc)
+
+	a := &app{auth: authSvc, hikes: hikeSvc}
+	if cfg.WeatherURL != "" {
+		a.weather = weather.NewService(postgres.NewWeatherRepository(db), gpx.NewParser(), openmeteo.NewClient(cfg.WeatherURL))
+	}
+
+	a.router = httpdelivery.NewRouter(httpdelivery.Deps{
+		Auth:           handler.NewAuthHandler(authSvc, cfg.CookieSecure),
+		Account:        handler.NewAccountHandler(accountSvc),
+		Hikes:          handler.NewHikeHandler(hikeSvc, interactionSvc, ogimage.Render, cfg.MaxUploadMB<<20),
+		Social:         handler.NewSocialHandler(socialSvc),
+		Summits:        handler.NewSummitHandler(summitSvc),
+		Interactions:   handler.NewInteractionHandler(interactionSvc),
+		Admin:          handler.NewAdminHandler(adminSvc, authSvc),
+		Authenticator:  authSvc,
+		Static:         web.Dist(),
+		AppURL:         cfg.AppURL,
+		HikeMeta:       hikeSvc,
+		RealIPHeader:   cfg.RealIPHeader,
+		TrustedProxies: cfg.TrustedProxies,
+	})
+	return a, nil
 }
 
 // refreshDerived backfills statistics of hikes imported by an older version.
