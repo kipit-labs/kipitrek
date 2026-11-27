@@ -74,6 +74,55 @@ jobs:
       # Type-checks too (tsc -b).
       - run: pnpm build
 
+  ui:
+    name: UI
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_USER: gpx
+          POSTGRES_PASSWORD: gpx
+          POSTGRES_DB: gpx
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U gpx -d gpx"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: web/package.json
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      # The real app in real browsers: WebKit at phone size, Chromium desktop.
+      - name: UI tests
+        env:
+          DATABASE_URL: postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable
+        run: make e2e
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            web/playwright-report
+            web/test-results
+          retention-days: 7
+
   docker:
     name: Docker image
     runs-on: ubuntu-latest

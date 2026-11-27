@@ -20,8 +20,9 @@ Four phases, in order. Never skip the questions or the real-usage tests.
 ## 2. Implement
 
 Follow CLAUDE.md. Tests for new logic (Go next to the code, `*_integration_test.go` for SQL; vitest in `web/`),
-both locales, README (API table, data, configuration) when behavior changes. New routes go into `routeAccess`.
-`make cover` and `make lint` green before phase 3.
+both locales, README (API table, data, configuration) when behavior changes. New routes go into `routeAccess`; new
+user flows get a journey in `cmd/kipitrek/api_integration_test.go` and, for what users click, in `web/e2e/`.
+`make cover`, `make e2e` and `make lint` green before phase 3.
 
 ## 3. Test in real usage
 
@@ -39,7 +40,7 @@ In the PR description (the last PR of a stack), under `## Testing`:
 ```markdown
 ## Testing
 
-`make cover` / `make lint`: green (coverage X%).
+`make cover` / `make e2e` / `make lint`: green (coverage X%).
 
 | # | Case | How | Expected | Result |
 |---|------|-----|----------|--------|

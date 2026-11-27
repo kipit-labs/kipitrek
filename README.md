@@ -76,6 +76,7 @@ Tests:
 make test               # Go and frontend (vitest) unit tests
 make test-integration   # repository tests against the dev database
 make cover              # both, with coverage; fails under COVERAGE_FLOOR (what CI runs)
+make e2e                # UI tests in WebKit (iPhone size) and Chromium (desktop), in Playwright's Docker image
 make lint               # golangci-lint (gofmt, vet, layer rules), oxlint
 ```
 
@@ -83,7 +84,10 @@ make lint               # golangci-lint (gofmt, vet, layer rules), oxlint
 adapter or GORM, adapters never call use cases. `internal/delivery/http/routes_test.go` lists who may call each API
 route (public, signed in, admin); a new route fails it until declared, and every protected route is checked to refuse
 signed-out users (and non-admins). `cmd/kipitrek/api_integration_test.go` drives the real application over HTTP
-on PostGIS (only email faked) through the main journeys: sign-up to account deletion, hikes, visibility and friends.
+on PostGIS (only email faked) through the main journeys: sign-up to account deletion, hikes, visibility and friends. `web/e2e/` does the same in
+real browsers with Playwright: sign in and out, import, rename and delete a hike, planned routes, visibility, language,
+and that no page scrolls sideways at phone size. The map's outside services are answered locally, so the tests run
+offline; any uncaught page error fails them.
 Files stay under 500 lines (revive `file-length-limit`, oxlint `max-lines`), except
 the vendored `web/src/components/ui/`.
 
