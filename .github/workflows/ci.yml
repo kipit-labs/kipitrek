@@ -42,13 +42,11 @@ jobs:
         with:
           version: v2.15.0
 
-      - name: Unit tests
-        run: go test -race ./...
-
-      - name: Integration tests
+      # Unit and integration tests in one run, failing under the coverage floor.
+      - name: Tests
         env:
-          TEST_DATABASE_URL: postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable
-        run: go test -race -tags integration ./internal/infrastructure/postgres/
+          DATABASE_URL: postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable
+        run: make cover
 
   web:
     name: Web

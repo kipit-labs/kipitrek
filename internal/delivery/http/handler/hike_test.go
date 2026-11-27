@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -25,6 +26,8 @@ type exportService struct {
 	HikeService
 	hikes []domain.Hike
 	err   error
+	// failAfter fails once every hike was streamed.
+	failAfter bool
 }
 
 func (s exportService) Export(_ context.Context, _ uuid.UUID, _ []uuid.UUID, fn func(*domain.Hike, []byte) error) error {
@@ -35,6 +38,9 @@ func (s exportService) Export(_ context.Context, _ uuid.UUID, _ []uuid.UUID, fn 
 		if err := fn(&s.hikes[i], []byte("<gpx>"+s.hikes[i].Name+"</gpx>")); err != nil {
 			return err
 		}
+	}
+	if s.failAfter {
+		return errors.New("connection reset")
 	}
 	return nil
 }
