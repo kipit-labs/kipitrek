@@ -21,7 +21,7 @@ type authService struct {
 
 var sessionExpiry = time.Date(2027, 1, 1, 0, 0, 0, 0, time.UTC)
 
-func (s authService) Login(_ context.Context, email, password string) (string, *domain.Session, error) {
+func (s authService) Login(_ context.Context, email, _ string) (string, *domain.Session, error) {
 	if s.err != nil {
 		return "", nil, s.err
 	}

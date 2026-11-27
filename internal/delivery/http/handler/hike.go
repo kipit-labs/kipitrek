@@ -1,17 +1,8 @@
 package handler
 
 import (
-	"archive/zip"
 	"context"
-	"errors"
-	"fmt"
-	"io"
-	"log/slog"
-	"mime"
 	"net/http"
-	"strings"
-	"time"
-	"unicode"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -86,77 +77,6 @@ func (h *HikeHandler) withInteractions(ctx context.Context, viewer uuid.UUID, hi
 	return nil
 }
 
-// Upload imports every file in the multipart "files" field and reports per-file
-// results. With ?planned=true the files are routes to do rather than hikes done.
-func (h *HikeHandler) Upload(w http.ResponseWriter, r *http.Request) {
-	user := middleware.UserFrom(r.Context())
-	importFile := h.svc.Import
-	if r.URL.Query().Get("planned") == "true" {
-		importFile = h.svc.ImportPlanned
-	}
-	r.Body = http.MaxBytesReader(w, r.Body, h.maxFileSize*maxFilesPerUpload)
-
-	mr, err := r.MultipartReader()
-	if err != nil {
-		writeJSON(w, http.StatusBadRequest, dto.Error{Error: "expected multipart/form-data", Code: "invalid_body"})
-		return
-	}
-
-	results := []dto.UploadResult{}
-	for {
-		part, err := mr.NextPart()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			writeJSON(w, http.StatusBadRequest, dto.Error{Error: "invalid multipart body", Code: "invalid_body"})
-			return
-		}
-		if part.FormName() != "files" || part.FileName() == "" {
-			part.Close()
-			continue
-		}
-		if len(results) >= maxFilesPerUpload {
-			part.Close()
-			writeJSON(w, http.StatusBadRequest, dto.Error{Error: fmt.Sprintf("at most %d files per upload", maxFilesPerUpload), Code: "too_many_files", Params: map[string]any{"max": maxFilesPerUpload}})
-			return
-		}
-
-		res := dto.UploadResult{Filename: part.FileName()}
-		data, err := io.ReadAll(io.LimitReader(part, h.maxFileSize+1))
-		part.Close()
-		switch {
-		case err != nil:
-			writeJSON(w, http.StatusBadRequest, dto.Error{Error: "failed to read upload", Code: "upload_failed"})
-			return
-		case int64(len(data)) > h.maxFileSize:
-			res.Error = fmt.Sprintf("file exceeds %d MB", h.maxFileSize>>20)
-			res.Code = "file_too_large"
-			res.Params = map[string]any{"max": h.maxFileSize >> 20}
-		default:
-			hike, err := importFile(r.Context(), user.ID, part.FileName(), data)
-			if err != nil {
-				if !errors.Is(err, domain.ErrInvalidGPX) {
-					writeError(w, r, err)
-					return
-				}
-				res.Error = "not a valid GPX file"
-				res.Code = "invalid_gpx"
-			} else {
-				d := dto.NewHike(hike)
-				res.Hike = &d
-			}
-		}
-		results = append(results, res)
-	}
-
-	if len(results) == 0 {
-		writeJSON(w, http.StatusBadRequest, dto.Error{Error: "no files provided", Code: "no_files"})
-		return
-	}
-	writeJSON(w, http.StatusOK, map[string]any{"results": results})
-}
-
 // List returns the signed-in user's hikes.
 func (h *HikeHandler) List(w http.ResponseWriter, r *http.Request) {
 	h.list(w, r, middleware.UserFrom(r.Context()).ID)
@@ -224,47 +144,6 @@ func (h *HikeHandler) Update(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, dto.NewHike(hike))
 }
 
-// MarkDone marks a planned hike as walked. An optional multipart "file" holds
-// the GPX recorded on the walk, which replaces the planned route.
-func (h *HikeHandler) MarkDone(w http.ResponseWriter, r *http.Request) {
-	id, ok := parseID(w, r)
-	if !ok {
-		return
-	}
-	var data []byte
-	if ct, _, _ := mime.ParseMediaType(r.Header.Get("Content-Type")); ct == "multipart/form-data" {
-		r.Body = http.MaxBytesReader(w, r.Body, h.maxFileSize+1<<20)
-		file, _, err := r.FormFile("file")
-		switch {
-		case errors.Is(err, http.ErrMissingFile):
-		case err != nil:
-			writeJSON(w, http.StatusBadRequest, dto.Error{Error: "invalid multipart body", Code: "invalid_body"})
-			return
-		default:
-			data, err = io.ReadAll(io.LimitReader(file, h.maxFileSize+1))
-			file.Close()
-			if err != nil {
-				writeJSON(w, http.StatusBadRequest, dto.Error{Error: "failed to read upload", Code: "upload_failed"})
-				return
-			}
-			if int64(len(data)) > h.maxFileSize {
-				writeJSON(w, http.StatusBadRequest, dto.Error{Error: fmt.Sprintf("file exceeds %d MB", h.maxFileSize>>20), Code: "file_too_large", Params: map[string]any{"max": h.maxFileSize >> 20}})
-				return
-			}
-		}
-	}
-	hike, err := h.svc.MarkDone(r.Context(), middleware.UserFrom(r.Context()).ID, id, data)
-	if errors.Is(err, domain.ErrInvalidGPX) {
-		writeJSON(w, http.StatusBadRequest, dto.Error{Error: "not a valid GPX file", Code: "invalid_gpx"})
-		return
-	}
-	if err != nil {
-		writeError(w, r, err)
-		return
-	}
-	writeJSON(w, http.StatusOK, dto.NewHike(hike))
-}
-
 func (h *HikeHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, ok := parseID(w, r)
 	if !ok {
@@ -288,57 +167,6 @@ func (h *HikeHandler) Profile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, dto.NewProfile(p))
-}
-
-// GPX downloads the hike's original GPX file.
-func (h *HikeHandler) GPX(w http.ResponseWriter, r *http.Request) {
-	id, ok := parseID(w, r)
-	if !ok {
-		return
-	}
-	hike, raw, err := h.svc.GPX(r.Context(), middleware.ViewerID(r.Context()), id)
-	if err != nil {
-		writeError(w, r, err)
-		return
-	}
-	w.Header().Set("Content-Type", "application/gpx+xml")
-	w.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": gpxFilename(hike.Name)}))
-	w.Header().Set("X-Content-Type-Options", "nosniff")
-	_, _ = w.Write(raw)
-}
-
-// gpxFilename turns a hike name into a safe download filename.
-func gpxFilename(name string) string {
-	clean := strings.Map(func(r rune) rune {
-		if unicode.IsControl(r) || strings.ContainsRune(`/\:*?"<>|`, r) {
-			return '_'
-		}
-		return r
-	}, strings.TrimSpace(name))
-	if clean == "" {
-		clean = "hike"
-	}
-	return clean + ".gpx"
-}
-
-// Export downloads a zip of the original GPX files of every hike the
-// signed-in user owns. Hikes are read one at a time and streamed, so an
-// error after the first file can only abort the download.
-func (h *HikeHandler) Export(w http.ResponseWriter, r *http.Request) {
-	h.export(w, r, nil)
-}
-
-// ExportSelected zips the GPX of the hikes in {ids} the user owns.
-func (h *HikeHandler) ExportSelected(w http.ResponseWriter, r *http.Request) {
-	var in dto.HikeIDs
-	if !decodeJSON(w, r, &in) {
-		return
-	}
-	ids, ok := parseIDs(w, in.IDs)
-	if !ok {
-		return
-	}
-	h.export(w, r, ids)
 }
 
 // DeleteMany deletes the hikes in {ids} the user owns, skipping the others.
@@ -370,68 +198,6 @@ func parseIDs(w http.ResponseWriter, raw []string) ([]uuid.UUID, bool) {
 		ids[i] = id
 	}
 	return ids, true
-}
-
-// export streams a zip of the user's hikes, only ids unless nil. Headers are
-// sent with the first file, so errors before it still get a JSON answer.
-func (h *HikeHandler) export(w http.ResponseWriter, r *http.Request, ids []uuid.UUID) {
-	user := middleware.UserFrom(r.Context())
-	name := "hikes-" + time.Now().UTC().Format(time.DateOnly) + ".zip"
-	started := false
-	start := func() {
-		if !started {
-			started = true
-			w.Header().Set("Content-Type", "application/zip")
-			w.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": name}))
-		}
-	}
-
-	zw := zip.NewWriter(w)
-	names := exportNames{}
-	err := h.svc.Export(r.Context(), user.ID, ids, func(hike *domain.Hike, raw []byte) error {
-		start()
-		modified := hike.CreatedAt
-		if hike.StartedAt != nil {
-			modified = *hike.StartedAt
-		}
-		f, err := zw.CreateHeader(&zip.FileHeader{Name: names.next(hike), Method: zip.Deflate, Modified: modified})
-		if err != nil {
-			return err
-		}
-		_, err = f.Write(raw)
-		return err
-	})
-	if err != nil && !started {
-		writeError(w, r, err)
-		return
-	}
-	if err == nil {
-		start()
-		err = zw.Close()
-	}
-	if err != nil && r.Context().Err() == nil {
-		slog.Error("export hikes", "user", user.ID, "err", err)
-		// Headers are sent; dropping the connection keeps a truncated zip
-		// from looking like a complete download.
-		panic(http.ErrAbortHandler)
-	}
-}
-
-// exportNames names files in an export after the hike's date and name,
-// numbering repeats so no file overwrites another.
-type exportNames map[string]bool
-
-func (used exportNames) next(h *domain.Hike) string {
-	base := strings.TrimSuffix(gpxFilename(h.Name), ".gpx")
-	if h.StartedAt != nil {
-		base = h.StartedAt.Format(time.DateOnly) + " " + base
-	}
-	name := base + ".gpx"
-	for i := 2; used[name]; i++ {
-		name = fmt.Sprintf("%s (%d).gpx", base, i)
-	}
-	used[name] = true
-	return name
 }
 
 // Labels returns the labels the signed-in user has put on their hikes.
