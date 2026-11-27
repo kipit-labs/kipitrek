@@ -75,7 +75,7 @@ Tests:
 ```bash
 make test               # Go and frontend (vitest) unit tests
 make test-integration   # repository tests against the dev database
-make lint               # gofmt, go vet, oxlint
+make lint               # golangci-lint (gofmt, vet, layer rules), oxlint
 ```
 
 Releases: a `chore(release): X.Y.Z` PR bumping `VERSION`; merging it tags, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` and creates the GitHub release (`.github/workflows/release.yml`). Production runs on the homelab's k3s cluster, which pins the image in its own manifests.

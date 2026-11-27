@@ -46,7 +46,7 @@ func (c *Client) Hourly(ctx context.Context, qs []domain.WeatherQuery) ([]domain
 	if len(qs) == 0 {
 		return nil, nil
 	}
-	lats, lons, eles := make([]string, len(qs)), make([]string, len(qs)), make([]string, len(qs))
+	lats, lons, elevs := make([]string, len(qs)), make([]string, len(qs)), make([]string, len(qs))
 	withEle := true
 	for i, q := range qs {
 		lats[i] = strconv.FormatFloat(q.Lat, 'f', 5, 64)
@@ -54,7 +54,7 @@ func (c *Client) Hourly(ctx context.Context, qs []domain.WeatherQuery) ([]domain
 		if q.Ele == nil {
 			withEle = false
 		} else {
-			eles[i] = strconv.FormatFloat(*q.Ele, 'f', 0, 64)
+			elevs[i] = strconv.FormatFloat(*q.Ele, 'f', 0, 64)
 		}
 	}
 	day := qs[0].Time.UTC().Truncate(24 * time.Hour)
@@ -69,7 +69,7 @@ func (c *Client) Hourly(ctx context.Context, qs []domain.WeatherQuery) ([]domain
 	// The track's own elevation corrects temperature for altitude; without
 	// it Open-Meteo falls back to a terrain model.
 	if withEle {
-		v.Set("elevation", strings.Join(eles, ","))
+		v.Set("elevation", strings.Join(elevs, ","))
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.url+"?"+v.Encode(), nil)
 	if err != nil {
