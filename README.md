@@ -75,8 +75,14 @@ Tests:
 ```bash
 make test               # Go and frontend (vitest) unit tests
 make test-integration   # repository tests against the dev database
+make cover              # both, with coverage; fails under COVERAGE_FLOOR (what CI runs)
 make lint               # golangci-lint (gofmt, vet, layer rules), oxlint
 ```
+
+`.golangci.yml` enforces the layers (depguard): `domain` and `usecase` import no framework, handlers never reach an
+adapter or GORM, adapters never call use cases. `internal/delivery/http/routes_test.go` lists who may call each API
+route (public, signed in, admin); a new route fails it until declared, and every protected route is checked to refuse
+signed-out users (and non-admins).
 
 Releases: a `chore(release): X.Y.Z` PR bumping `VERSION`; merging it tags, publishes `ghcr.io/kipit-labs/kipitrek:X.Y.Z` and creates the GitHub release (`.github/workflows/release.yml`). Production runs on the homelab's k3s cluster, which pins the image in its own manifests.
 
