@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const port = 8091
-const databaseURL = process.env.DATABASE_URL ?? 'postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable'
+export const databaseURL = process.env.DATABASE_URL ?? 'postgres://gpx:gpx@localhost:5432/gpx?sslmode=disable'
 
 // UI tests drive the real app (Go binary, embedded build, PostGIS) in a real browser: WebKit at phone size, as on
 // the iPhone, and Chromium at desktop size. Run them with `make e2e`, which builds bin/kipitrek first.

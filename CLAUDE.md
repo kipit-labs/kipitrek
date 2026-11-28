@@ -39,6 +39,8 @@ The tests are the safety net that lets agents change code: a change is done when
 
 - A new route goes into `routeAccess`; a new user-facing flow adds or extends a journey in both end-to-end suites
   (API, and UI for what users click).
+- A new page or tab is opened by `e2e/pages.e2e.ts`, with data in it: a component that throws while rendering blanks
+  the page, and fails only a test that opens it.
 - UI tests find elements by role and label, as users and screen readers do, never by CSS class or test id: an element
   a test cannot find by name is an accessibility bug. They wait on state or responses, never on timeouts. Any
   uncaught page error fails the test (`e2e/fixtures.ts`). Each test signs up its own account, which is deleted after.
