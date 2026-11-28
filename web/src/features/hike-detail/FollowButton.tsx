@@ -13,13 +13,16 @@ export function FollowButton({ id }: { id: string }) {
     <Button
       variant="outline"
       size="sm"
+      aria-label={t('record.followRoute')}
+      title={t('record.followRoute')}
       onClick={() => {
         useRecord.getState().follow(id)
         navigate('/record')
       }}
     >
       <Footprints />
-      {t('record.followRoute')}
+      {/* Icon only on phones, or the hike's name has no room left in the header. */}
+      <span className="hidden sm:inline">{t('record.followRoute')}</span>
     </Button>
   )
 }

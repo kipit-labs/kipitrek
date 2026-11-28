@@ -77,7 +77,7 @@ export function MarkDoneDialog({ id, open: controlledOpen, onOpenChange: setCont
     <Dialog open={open} onOpenChange={onOpenChange}>
       {!controlled && (
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" aria-label={t('markDone.title')} title={t('markDone.title')}>
             <CalendarCheck />
             <span className="hidden sm:inline">{t('markDone.title')}</span>
           </Button>
